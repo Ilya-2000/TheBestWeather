@@ -1,4 +1,4 @@
-package com.impact.thebestweather.ui.dashboard
+package com.impact.thebestweather.ui.settings
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,20 +10,20 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.impact.thebestweather.R
 
-class DashboardFragment : Fragment() {
+class SettingsFragment : Fragment() {
 
-    private lateinit var dashboardViewModel: DashboardViewModel
+    private lateinit var settingsViewModel: SettingsViewModel
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        dashboardViewModel =
-                ViewModelProvider(this).get(DashboardViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        dashboardViewModel.text.observe(viewLifecycleOwner, Observer {
+        settingsViewModel =
+                ViewModelProvider(this).get(SettingsViewModel::class.java)
+        val root = inflater.inflate(R.layout.fragment_notifications, container, false)
+        val textView: TextView = root.findViewById(R.id.text_notifications)
+        settingsViewModel.text.observe(viewLifecycleOwner, Observer {
             textView.text = it
         })
         return root
