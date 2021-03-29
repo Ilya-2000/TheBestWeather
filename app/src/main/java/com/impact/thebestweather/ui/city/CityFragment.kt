@@ -22,10 +22,6 @@ class CityFragment : Fragment() {
         cityViewModel =
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_dashboard, container, false)
-        val textView: TextView = root.findViewById(R.id.text_dashboard)
-        cityViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
-        })
         return root
     }
 }

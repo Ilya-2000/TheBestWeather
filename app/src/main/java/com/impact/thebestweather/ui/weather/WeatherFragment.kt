@@ -22,9 +22,7 @@ class WeatherFragment : Fragment() {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_home, container, false)
-        weatherViewModel.text.observe(viewLifecycleOwner, Observer {
 
-        })
         return root
     }
 }
