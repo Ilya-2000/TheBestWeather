@@ -9,17 +9,17 @@
         android:id="@+id/navigation_home"
         android:name="com.impact.thebestweather.ui.weather.WeatherFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_weather" />
 
     <fragment
         android:id="@+id/navigation_city"
         android:name="com.impact.thebestweather.ui.city.CityFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_city" />
 
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.impact.thebestweather.ui.settings.SettingsFragment"
         android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/fragment_settings" />
 </navigation>
