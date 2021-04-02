@@ -9,11 +9,8 @@ class WeatherSource {
         WeatherApiService.create()
     }
 
-    fun getWeather(weatherRequest: WeatherRequest) {
-        weatherApiService.getOneCallWeather(
-            weatherRequest.lat,
-            weatherRequest.lon,
-            weatherRequest.exclude,
-            weatherRequest.appid)
+    suspend fun getWeather(weatherRequest: WeatherRequest) {
+        weatherApiService.getOneCallWeather(weatherRequest.lat, weatherRequest.lon,
+            weatherRequest.exclude, weatherRequest.appid)
     }
 }
