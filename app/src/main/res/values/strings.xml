@@ -3,4 +3,6 @@
     <string name="title_home">Weather</string>
     <string name="title_dashboard">City</string>
     <string name="title_notifications">Settings</string>
+    <string name="choose_city">Choose your city</string>
+    <string name="desc_city_text">Select a city to see the weather</string>
 </resources>
