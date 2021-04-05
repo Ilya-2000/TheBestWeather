@@ -10,14 +10,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
-class WeatherSource(private val compositeDisposable: CompositeDisposable) {
+class WeatherSource() {
     private val TAG = "WeatherSource"
     private lateinit var dailyWeatherData: DailyWeather
     private val weatherApiService by lazy {
         WeatherApiService.create()
     }
 
-    fun getWeather(weatherRequest: WeatherRequest) {
+    fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
         compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.lat, weatherRequest.lon,
                 weatherRequest.exclude, weatherRequest.appid)
                 .observeOn(Schedulers.io())
