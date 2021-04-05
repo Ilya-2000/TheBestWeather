@@ -12,6 +12,7 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherSource(private val compositeDisposable: CompositeDisposable) {
     private val TAG = "WeatherSource"
+    private lateinit var dailyWeatherData: DailyWeather
     private val weatherApiService by lazy {
         WeatherApiService.create()
     }
@@ -24,6 +25,7 @@ class WeatherSource(private val compositeDisposable: CompositeDisposable) {
                 .subscribeWith(object : DisposableObserver<DailyWeather>(){
                     override fun onNext(t: DailyWeather) {
                         Log.d(TAG, "onNext: $t")
+                        setDailyWeatherData(t)
                     }
 
                     override fun onError(e: Throwable) {
@@ -37,4 +39,13 @@ class WeatherSource(private val compositeDisposable: CompositeDisposable) {
                 })
         )
     }
+
+    private fun setDailyWeatherData(dailyWeather: DailyWeather) {
+        dailyWeatherData = dailyWeather
+    }
+
+    fun getDailyWeatherData(): DailyWeather {
+        return dailyWeatherData
+    }
+
 }
