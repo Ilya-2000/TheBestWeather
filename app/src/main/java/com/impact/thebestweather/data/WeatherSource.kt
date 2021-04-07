@@ -1,6 +1,8 @@
 package com.impact.thebestweather.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.impact.thebestweather.models.DailyWeather
 import com.impact.thebestweather.models.WeatherRequest
 import com.impact.thebestweather.network.WeatherApiService
@@ -15,9 +17,13 @@ import io.reactivex.schedulers.Schedulers
 class WeatherSource() {
     private val TAG = "WeatherSource"
     private var dailyWeatherData: DailyWeather? = null
+    private val _weatherLiveData = MutableLiveData<DailyWeather>()
+    val weatherLiveData: LiveData<DailyWeather>
+        get() = _weatherLiveData
     private val weatherApiService by lazy {
         WeatherApiService.create()
     }
+
 
     fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
         compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.lat, weatherRequest.lon,
@@ -47,7 +53,7 @@ class WeatherSource() {
     }
 
     private fun setDailyWeatherData(dailyWeather: DailyWeather) {
-        dailyWeatherData = dailyWeather
+        _weatherLiveData.value = dailyWeather
     }
 
     fun getDailyWeatherData(): DailyWeather? {
