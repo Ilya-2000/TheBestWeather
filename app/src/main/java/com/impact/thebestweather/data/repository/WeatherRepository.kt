@@ -1,5 +1,6 @@
 package com.impact.thebestweather.data.repository
 
+import android.util.Log
 import com.impact.thebestweather.data.WeatherSource
 import com.impact.thebestweather.models.DailyWeather
 import com.impact.thebestweather.models.WeatherRequest
@@ -10,8 +11,9 @@ class WeatherRepository() {
         private val TAG = "WeatherRepository"
         private val weatherSource = WeatherSource()
         fun getWeather( compositeDisposable: CompositeDisposable,
-                        weatherRequest: WeatherRequest): DailyWeather {
+                        weatherRequest: WeatherRequest): DailyWeather? {
             weatherSource.getWeather(compositeDisposable, weatherRequest)
+            Log.d(TAG,"getWeather")
             return weatherSource.getDailyWeatherData()
         }
     }
