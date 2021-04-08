@@ -33,7 +33,7 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
     inner class ViewHolder(itemView: HourlyWeatherItemBinding): RecyclerView.ViewHolder(itemView.root) {
 
         fun bind(item: WeatherViewModel) {
-            
+
         }
 
     }
