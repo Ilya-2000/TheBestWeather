@@ -5,6 +5,9 @@
         <variable
             name="weather"
             type="com.impact.thebestweather.models.DailyWeather" />
+        <variable
+            name="hourly"
+            type="com.impact.thebestweather.models.Hourly" />
     </data>
 
     <LinearLayout
@@ -17,7 +20,7 @@
             android:id="@+id/time_hourly_weather_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{}"
+            android:text="00:00"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_margin="8dp" />
@@ -27,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="0"
+            android:text="@{hourly.temp}"
             android:layout_gravity="center_horizontal" />
 
         <ImageView
