@@ -3,22 +3,19 @@ package com.impact.thebestweather.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.impact.thebestweather.models.DailyWeather
-import com.impact.thebestweather.models.WeatherRequest
+import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.network.WeatherApiService
-import io.reactivex.Observable
-import io.reactivex.Observer
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
 class WeatherSource() {
     private val TAG = "WeatherSource"
-    private var dailyWeatherData: DailyWeather? = null
-    private val _weatherLiveData = MutableLiveData<DailyWeather>()
-    val weatherLiveData: LiveData<DailyWeather>
+    private var dailyWeatherData: DailyData? = null
+    private val _weatherLiveData = MutableLiveData<DailyData>()
+    val weatherLiveData: LiveData<DailyData>
         get() = _weatherLiveData
     private val weatherApiService by lazy {
         WeatherApiService.create()
@@ -26,12 +23,12 @@ class WeatherSource() {
 
 
     fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.lat, weatherRequest.lon,
-                weatherRequest.exclude, weatherRequest.appid)
+        compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.apiKey,
+        weatherRequest.language, weatherRequest.details, weatherRequest.metric)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(object : DisposableObserver<DailyWeather>(){
-                    override fun onNext(t: DailyWeather) {
+                .subscribeWith(object : DisposableObserver<DailyData>(){
+                    override fun onNext(t: DailyData) {
                         Log.d(TAG, "onNext: $t")
                         setDailyWeatherData(t)
                     }
@@ -52,11 +49,11 @@ class WeatherSource() {
         )
     }
 
-    private fun setDailyWeatherData(dailyWeather: DailyWeather) {
+    private fun setDailyWeatherData(dailyWeather: DailyData) {
         _weatherLiveData.value = dailyWeather
     }
 
-    fun getDailyWeatherData(): DailyWeather? {
+    fun getDailyWeatherData(): DailyData? {
         return dailyWeatherData
     }
 
