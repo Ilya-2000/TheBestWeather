@@ -1,6 +1,7 @@
 package com.impact.thebestweather.network
 
 import com.impact.thebestweather.models.weather.daily.DailyData
+import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.utils.Constant
 import io.reactivex.Observable
 import retrofit2.Retrofit
@@ -13,13 +14,21 @@ import retrofit2.http.Query
 
 interface WeatherApiService {
     @GET("/forecasts/v1/daily/5day/{id}")
-    fun getOneCallWeather(
+    fun getDailyWeatherFromNetwork(
             @Path("id" )id: String,
             @Query("apikey")apiKey: String,
             @Query("language")language: String,
             @Query("details")details: String,
             @Query("metric")metric: String,
     ): Observable<DailyData>
+
+    fun getHourlyWeatherFromNetwork(
+            @Path("id" )id: String,
+            @Query("apikey")apiKey: String,
+            @Query("language")language: String,
+            @Query("details")details: String,
+            @Query("metric")metric: String,
+    ): Observable<HourlyData>
 
 
     companion object {

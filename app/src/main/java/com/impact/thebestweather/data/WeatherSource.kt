@@ -5,7 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.daily.DailyData
+import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.network.WeatherApiService
+import com.impact.thebestweather.utils.Constant
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -22,8 +24,8 @@ class WeatherSource() {
     }
 
 
-    fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.id, weatherRequest.apiKey,
+    fun getDailyWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
+        compositeDisposable.add(weatherApiService.getDailyWeatherFromNetwork(weatherRequest.id, weatherRequest.apiKey,
         weatherRequest.language, weatherRequest.details, weatherRequest.metric)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -47,6 +49,27 @@ class WeatherSource() {
 
                 })
         )
+    }
+
+    fun getHourlyWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
+        compositeDisposable.add(weatherApiService.getHourlyWeatherFromNetwork(weatherRequest.id,
+        weatherRequest.apiKey, weatherRequest.language, weatherRequest.details, weatherRequest.metric)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<HourlyData>(){
+                    override fun onNext(t: HourlyData) {
+
+                    }
+
+                    override fun onError(e: Throwable) {
+
+                    }
+
+                    override fun onComplete() {
+
+                    }
+
+                }))
     }
 
     private fun setDailyWeatherData(dailyWeather: DailyData) {

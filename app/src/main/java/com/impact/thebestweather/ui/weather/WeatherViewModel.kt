@@ -19,7 +19,7 @@ class WeatherViewModel : ViewModel() {
 
 
     fun getWeather() {
-        WeatherRepository.getWeather(compositeDisposable, WeatherRequest("289748", Constant.API_KEY, "ru",
+        WeatherRepository.getDailyWeather(compositeDisposable, WeatherRequest("289748", Constant.API_KEY, "ru",
         "false", "true"))?.let { setWeatherLiveData(it) }
         Log.d(TAG, "getWeather")
         Log.d(TAG, "getWeather/data: ${weatherLiveData.value}")

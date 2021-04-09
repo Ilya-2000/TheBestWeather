@@ -11,9 +11,9 @@ class WeatherRepository() {
         private val TAG = "WeatherRepository"
         private val weatherSource = WeatherSource()
 
-        fun getWeather( compositeDisposable: CompositeDisposable,
+        fun getDailyWeather( compositeDisposable: CompositeDisposable,
                         weatherRequest: WeatherRequest): DailyData? {
-            weatherSource.getWeather(compositeDisposable, weatherRequest)
+            weatherSource.getDailyWeather(compositeDisposable, weatherRequest)
             Log.d(TAG,"getWeather")
 
             return weatherSource.weatherLiveData.value
