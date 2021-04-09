@@ -8,15 +8,17 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface WeatherApiService {
-    @GET("/forecasts/v1/daily/5day/")
+    @GET("/forecasts/v1/daily/5day/{id}")
     fun getOneCallWeather(
-        @Query("apikey")apiKey: String,
-        @Query("language")language: String,
-        @Query("details")details: String,
-        @Query("metric")metric: String
+            @Path("id" )id: String,
+            @Query("apikey")apiKey: String,
+            @Query("language")language: String,
+            @Query("details")details: String,
+            @Query("metric")metric: String,
     ): Observable<DailyData>
 
 

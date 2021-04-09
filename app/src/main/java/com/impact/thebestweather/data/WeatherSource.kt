@@ -23,7 +23,7 @@ class WeatherSource() {
 
 
     fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.apiKey,
+        compositeDisposable.add(weatherApiService.getOneCallWeather(weatherRequest.id, weatherRequest.apiKey,
         weatherRequest.language, weatherRequest.details, weatherRequest.metric)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())

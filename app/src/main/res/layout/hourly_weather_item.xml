@@ -4,10 +4,10 @@
     <data class="HourlyWeatherItemBinding">
         <variable
             name="weather"
-            type="com.impact.thebestweather.models.DailyWeather" />
+            type="com.impact.thebestweather.models.weather.daily.DailyData" />
         <variable
             name="hourly"
-            type="com.impact.thebestweather.models.Hourly" />
+            type="com.impact.thebestweather.models.weather.hourly.HourlyData" />
     </data>
 
     <LinearLayout
@@ -30,7 +30,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="@{hourly.temp}"
+            android:text=""
             android:layout_gravity="center_horizontal" />
 
         <ImageView
