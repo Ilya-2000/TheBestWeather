@@ -16,9 +16,13 @@ import io.reactivex.schedulers.Schedulers
 class WeatherSource() {
     private val TAG = "WeatherSource"
     private var dailyWeatherData: DailyData? = null
-    private val _weatherLiveData = MutableLiveData<DailyData>()
-    val weatherLiveData: LiveData<DailyData>
-        get() = _weatherLiveData
+    private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
+    val dailyWeatherLiveData: LiveData<DailyData>
+        get() = _dailyWeatherLiveData
+
+    private val _hourlyWeatherLiveData = MutableLiveData<HourlyData>()
+    val hourlyWeatherLiveData: LiveData<HourlyData>
+        get() = _hourlyWeatherLiveData
     private val weatherApiService by lazy {
         WeatherApiService.create()
     }
@@ -58,22 +62,26 @@ class WeatherSource() {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableObserver<HourlyData>(){
                     override fun onNext(t: HourlyData) {
-
+                        Log.d(TAG, "getHourlyWeather: onNext/ $t")
                     }
 
                     override fun onError(e: Throwable) {
-
+                        Log.d(TAG, "getHourlyWeather: onError/ $e")
                     }
 
                     override fun onComplete() {
-
+                        Log.d(TAG, "getHourlyWeather: onComplete")
                     }
 
                 }))
     }
 
     private fun setDailyWeatherData(dailyWeather: DailyData) {
-        _weatherLiveData.value = dailyWeather
+        _dailyWeatherLiveData.value = dailyWeather
+    }
+
+    private fun setHourlyWeatherData(hourlyWeather: HourlyData) {
+        _hourlyWeatherLiveData.value = hourlyWeather
     }
 
     fun getDailyWeatherData(): DailyData? {

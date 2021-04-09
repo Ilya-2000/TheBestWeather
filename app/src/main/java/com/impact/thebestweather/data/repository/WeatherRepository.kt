@@ -16,7 +16,7 @@ class WeatherRepository() {
             weatherSource.getDailyWeather(compositeDisposable, weatherRequest)
             Log.d(TAG,"getWeather")
 
-            return weatherSource.weatherLiveData.value
+            return weatherSource.dailyWeatherLiveData.value
         }
     }
 }
