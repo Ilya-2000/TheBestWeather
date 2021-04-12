@@ -26,14 +26,14 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
         holder.bind(item)
     }
 
-    override fun getItemCount(): Int = 24
+    override fun getItemCount(): Int = 12
 
 
 
-    inner class ViewHolder(itemView: HourlyWeatherItemBinding): RecyclerView.ViewHolder(itemView.root) {
+    inner class ViewHolder(var binding: HourlyWeatherItemBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: WeatherViewModel) {
-
+            this.binding.hourly = item.hourlyWeatherLiveData.value?.get(position)
         }
 
     }
