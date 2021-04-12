@@ -21,7 +21,7 @@ interface WeatherApiService {
             @Query("details")details: String,
             @Query("metric")metric: String,
     ): Observable<DailyData>
-
+    @GET("/forecasts/v1/hourly/12hour/{id}")
     fun getHourlyWeatherFromNetwork(
             @Path("id" )id: String,
             @Query("apikey")apiKey: String,

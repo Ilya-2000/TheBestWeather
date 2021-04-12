@@ -19,7 +19,8 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        weatherViewModel.getWeather()
+        weatherViewModel.getDailyWeather()
+        weatherViewModel.getHourlyWeather()
         val root = inflater.inflate(R.layout.fragment_weather, container, false)
 
         return root

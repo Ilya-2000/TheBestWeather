@@ -22,6 +22,7 @@ class WeatherRepository() {
 
         fun getHourlyWeather(compositeDisposable: CompositeDisposable,
         weatherRequest: WeatherRequest): HourlyData? {
+            weatherSource.getHourlyWeather(compositeDisposable, weatherRequest)
             return weatherSource.hourlyWeatherLiveData.value
         }
     }
