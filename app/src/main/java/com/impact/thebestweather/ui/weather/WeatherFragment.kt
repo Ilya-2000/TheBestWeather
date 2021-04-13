@@ -1,6 +1,9 @@
 package com.impact.thebestweather.ui.weather
 
+import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +16,7 @@ import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 
 class WeatherFragment : Fragment() {
-
+    private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
 
     override fun onCreateView(
@@ -23,16 +26,19 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        weatherViewModel.getDailyWeather()
+        //weatherViewModel.getDailyWeather()
         weatherViewModel.getHourlyWeather()
         val root = inflater.inflate(R.layout.fragment_weather, container, false)
         val hourlyRv = root.findViewById<RecyclerView>(R.id.hourly_weather_rv)
         hourlyRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        weatherViewModel.hourlyWeatherLiveData.observe(viewLifecycleOwner, Observer {
+        weatherViewModel.hourlyWeatherLiveData.observe(viewLifecycleOwner, Observer { data ->
             val adapter = HourlyRvAdapter(weatherViewModel)
             hourlyRv.adapter = adapter
             adapter.notifyDataSetChanged()
+            Log.d(TAG, "it: $data")
         })
+
+
 
         return root
     }
