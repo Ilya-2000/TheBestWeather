@@ -47,6 +47,7 @@ class WeatherSource() {
                     override fun onComplete() {
                         Log.d(TAG, "onComplete")
                         getHourlyWeather(compositeDisposable, weatherRequest)
+                        getCurrentWeather(compositeDisposable, weatherRequest)
                     }
 
                     /*override fun onSubscribe(d: Disposable) {
