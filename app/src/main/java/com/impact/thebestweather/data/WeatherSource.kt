@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.network.WeatherApiService
@@ -45,6 +46,7 @@ class WeatherSource() {
 
                     override fun onComplete() {
                         Log.d(TAG, "onComplete")
+                        getHourlyWeather(compositeDisposable, weatherRequest)
                     }
 
                     /*override fun onSubscribe(d: Disposable) {
@@ -72,6 +74,27 @@ class WeatherSource() {
 
                     override fun onComplete() {
                         Log.d(TAG, "getHourlyWeather: onComplete")
+                    }
+
+                }))
+    }
+
+    fun getCurrentWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
+        compositeDisposable.add(weatherApiService.getCurrentWeather(weatherRequest.id,
+                weatherRequest.apiKey, weatherRequest.language, weatherRequest.details)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(object : DisposableObserver<CurrentWeather>(){
+                    override fun onNext(t: CurrentWeather) {
+                        Log.d(TAG, "getCurrentWeather: onNext/ $t")
+                    }
+
+                    override fun onError(e: Throwable) {
+                        Log.d(TAG, "getCurrentWeather: onError/ $e")
+                    }
+
+                    override fun onComplete() {
+                        Log.d(TAG, "getCurrentWeather: onComplete")
                     }
 
                 }))

@@ -26,8 +26,7 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        //weatherViewModel.getDailyWeather()
-        weatherViewModel.getHourlyWeather()
+        weatherViewModel.getHourly()
         val root = inflater.inflate(R.layout.fragment_weather, container, false)
         val hourlyRv = root.findViewById<RecyclerView>(R.id.hourly_weather_rv)
         hourlyRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

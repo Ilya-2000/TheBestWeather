@@ -1,9 +1,11 @@
 package com.impact.thebestweather.network
 
+import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.utils.Constant
 import io.reactivex.Observable
+import io.reactivex.Single
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -29,6 +31,14 @@ interface WeatherApiService {
             @Query("details")details: String,
             @Query("metric")metric: String,
     ): Observable<HourlyData>
+    @GET("/currentconditions/v1/topcities/{id}")
+    fun getCurrentWeather(
+            @Path("id" )id: String,
+            @Query("apikey")apiKey: String,
+            @Query("language")language: String,
+            @Query("details")details: String
+    ): Observable<CurrentWeather>
+
 
 
     companion object {

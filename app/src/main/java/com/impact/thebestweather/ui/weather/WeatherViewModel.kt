@@ -10,6 +10,7 @@ import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.utils.Constant
+import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.disposables.CompositeDisposable
 
 class WeatherViewModel : ViewModel() {
@@ -22,41 +23,19 @@ class WeatherViewModel : ViewModel() {
     private val _hourlyWeatherLiveData = MutableLiveData<HourlyData>()
     val hourlyWeatherLiveData: LiveData<HourlyData>
         get() = _hourlyWeatherLiveData
+    private val _loadingState = MutableLiveData<LoadingState>()
+    val loadingState: LiveData<LoadingState>
+        get() = _loadingState
 
-
-
-
-
-    fun getDailyWeather() {
-        WeatherRepository.getDailyWeather(compositeDisposable, WeatherRequest("289748", Constant.API_KEY, "ru",
-        "false", "true"))?.let { setDailyWeatherLiveData(it) }
-        Log.d(TAG, "getDailyWeather")
-        Log.d(TAG, "getDailyWeather/data: ${dailyWeatherLiveData.value}")
-
-    }
-
-    fun getHourlyWeather() {
-        /*WeatherRepository.getHourlyWeather(compositeDisposable, WeatherRequest("289748", Constant.API_KEY, "ru",
-                "false", "true"))?.let { setHourlyWeatherLiveData(it) }*/
+    fun getHourly() {
         weatherSource = WeatherSource()
         weatherSource.getHourlyWeather(compositeDisposable, WeatherRequest("289748",
                 Constant.API_KEY, "ru",
                 "false", "true"))
-        weatherSource.hourlyWeatherLiveData.value?.let { setHourlyWeatherLiveData(it) }
-
     }
 
-    private fun setDailyWeatherLiveData(dailyWeather: DailyData) {
-        _dailyWeatherLiveData.value = dailyWeather
 
-    }
 
-    private fun setHourlyWeatherLiveData(hourlyData: HourlyData) {
-        _hourlyWeatherLiveData.value = hourlyData
-        Log.d(TAG, "setHourlyWeatherLiveData/hourlyData: $hourlyData")
-        Log.d(TAG, "setHourlyWeatherLiveData: ${hourlyWeatherLiveData.value}")
-
-    }
 
 
 }
