@@ -27,11 +27,34 @@ class WeatherViewModel : ViewModel() {
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
 
-    fun getHourly() {
+    init {
+        getWeather()
+    }
+
+    /*fun getHourly() {
         weatherSource = WeatherSource()
         weatherSource.getHourlyWeather(compositeDisposable, WeatherRequest("289748",
                 Constant.API_KEY, "ru",
                 "false", "true"))
+    }*/
+
+    fun getWeather() {
+        try {
+            _loadingState.value = LoadingState.LOADING
+            weatherSource = WeatherSource()
+            weatherSource.getDailyWeather(compositeDisposable, WeatherRequest("289748",
+                    Constant.API_KEY, "ru",
+                    "false", "true"))
+            weatherSource.getHourlyWeather(compositeDisposable, WeatherRequest("289748",
+                    Constant.API_KEY, "ru",
+                    "false", "true"))
+            _loadingState.value = LoadingState.LOADED
+        } catch (e: Exception) {
+            _loadingState.value = LoadingState.error(e.message)
+        }
+
+
+
     }
 
 

@@ -9,6 +9,7 @@ import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.network.WeatherApiService
 import com.impact.thebestweather.utils.Constant
+import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableObserver
@@ -16,7 +17,6 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherSource() {
     private val TAG = "WeatherSource"
-    private var dailyWeatherData: DailyData? = null
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
     val dailyWeatherLiveData: LiveData<DailyData>
         get() = _dailyWeatherLiveData
@@ -24,6 +24,14 @@ class WeatherSource() {
     private val _hourlyWeatherLiveData = MutableLiveData<HourlyData>()
     val hourlyWeatherLiveData: LiveData<HourlyData>
         get() = _hourlyWeatherLiveData
+
+    private val _currentWeatherLiveData = MutableLiveData<CurrentWeather>()
+    val currentWeatherLiveData: LiveData<CurrentWeather>
+        get() = _currentWeatherLiveData
+
+    private val _loadingStateLiveData = MutableLiveData<LoadingState>()
+    val loadingStateLiveData: LiveData<LoadingState>
+        get() = _loadingStateLiveData
     private val weatherApiService by lazy {
         WeatherApiService.create()
     }
@@ -46,13 +54,7 @@ class WeatherSource() {
 
                     override fun onComplete() {
                         Log.d(TAG, "onComplete")
-                        getHourlyWeather(compositeDisposable, weatherRequest)
-                        getCurrentWeather(compositeDisposable, weatherRequest)
                     }
-
-                    /*override fun onSubscribe(d: Disposable) {
-                        Log.d(TAG, "onSubscribe: $d")
-                    }*/
 
                 })
         )

@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.HourlyRvAdapter
+import com.impact.thebestweather.utils.LoadingState
 
 class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
@@ -26,16 +28,30 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        weatherViewModel.getHourly()
         val root = inflater.inflate(R.layout.fragment_weather, container, false)
         val hourlyRv = root.findViewById<RecyclerView>(R.id.hourly_weather_rv)
         hourlyRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        weatherViewModel.hourlyWeatherLiveData.observe(viewLifecycleOwner, Observer { data ->
-            val adapter = HourlyRvAdapter(weatherViewModel)
-            hourlyRv.adapter = adapter
-            adapter.notifyDataSetChanged()
-            Log.d(TAG, "it: $data")
+        weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
+            when(it.status) {
+                LoadingState.Status.FAILED -> {
+                    Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "it: $it")
+                }
+                LoadingState.Status.RUNNING -> {
+                    Toast.makeText(requireContext(), "Loading", Toast.LENGTH_LONG).show()
+                    Log.d(TAG, "it: $it")
+                }
+                LoadingState.Status.SUCCESS -> {
+                    Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
+                    val adapter = HourlyRvAdapter(weatherViewModel)
+                    hourlyRv.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                    Log.d(TAG, "it: $it")
+                }
+            }
+
         })
+
 
 
 
