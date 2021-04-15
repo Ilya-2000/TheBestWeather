@@ -90,6 +90,7 @@ class WeatherSource() {
                 .subscribeWith(object : DisposableObserver<CurrentWeather>(){
                     override fun onNext(t: CurrentWeather) {
                         Log.d(TAG, "getCurrentWeather: onNext/ $t")
+                        setCurrentWeatherData(t)
                     }
 
                     override fun onError(e: Throwable) {
@@ -109,6 +110,10 @@ class WeatherSource() {
 
     private fun setHourlyWeatherData(hourlyWeather: HourlyData) {
         _hourlyWeatherLiveData.value = hourlyWeather
+    }
+
+    private fun setCurrentWeatherData(currentWeather: CurrentWeather) {
+        _currentWeatherLiveData.value = currentWeather
     }
 
 

@@ -6,5 +6,4 @@ data class WeatherRequest(
         val language: String,
         val details: String,
         val metric: String
-
 )

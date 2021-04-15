@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.impact.thebestweather.data.WeatherSource
 import com.impact.thebestweather.data.repository.WeatherRepository
 import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.utils.Constant
@@ -16,7 +17,8 @@ import io.reactivex.disposables.CompositeDisposable
 class WeatherViewModel : ViewModel() {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    lateinit var weatherSource: WeatherSource
+    //lateinit var weatherSource: WeatherSource
+
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
     val dailyWeatherLiveData: LiveData<DailyData>
         get() = _dailyWeatherLiveData
@@ -26,6 +28,9 @@ class WeatherViewModel : ViewModel() {
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
+    private val _currentWeatherLiveData = MutableLiveData<CurrentWeather>()
+    val currentWeatherLiveData: LiveData<CurrentWeather>
+        get() = _currentWeatherLiveData
 
     init {
         getWeather()
@@ -38,17 +43,26 @@ class WeatherViewModel : ViewModel() {
                 "false", "true"))
     }*/
 
-    fun getWeather() {
+    private fun getWeather() {
         try {
             _loadingState.value = LoadingState.LOADING
-            weatherSource = WeatherSource()
+            /*weatherSource = WeatherSource()
             weatherSource.getDailyWeather(compositeDisposable, WeatherRequest("289748",
                     Constant.API_KEY, "ru",
                     "false", "true"))
             weatherSource.getHourlyWeather(compositeDisposable, WeatherRequest("289748",
                     Constant.API_KEY, "ru",
+                    "false", "true"))*/
+            WeatherRepository.getWeather(compositeDisposable, WeatherRequest("289748",
+                    Constant.API_KEY, "ru",
                     "false", "true"))
+
             _loadingState.value = LoadingState.LOADED
+            if (_loadingState.value == LoadingState.LOADED) {
+                _dailyWeatherLiveData.value = WeatherRepository.dailyData
+                _hourlyWeatherLiveData.value = WeatherRepository.hourlyData
+                _currentWeatherLiveData.value = WeatherRepository.currentWeather
+            }
         } catch (e: Exception) {
             _loadingState.value = LoadingState.error(e.message)
         }
