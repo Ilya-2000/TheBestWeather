@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.impact.thebestweather.data.WeatherSource
 import com.impact.thebestweather.data.repository.WeatherRepository
+import com.impact.thebestweather.models.Resource
 import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
@@ -52,6 +53,7 @@ class WeatherViewModel : ViewModel() {
 
             _loadingState.value = LoadingState.LOADED
             if (_loadingState.value == LoadingState.LOADED) {
+                _hourlyWeatherLiveData.value
                 /*_dailyWeatherLiveData.value = WeatherRepository.dailyData
                 _hourlyWeatherLiveData.value = WeatherRepository.hourlyData
                 _currentWeatherLiveData.value = WeatherRepository.currentWeather*/

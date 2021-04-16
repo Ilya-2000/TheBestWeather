@@ -3,6 +3,7 @@ package com.impact.thebestweather.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.impact.thebestweather.models.Resource
 import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
@@ -68,6 +69,7 @@ class WeatherSource() {
                 .subscribeWith(object : DisposableObserver<HourlyData>(){
                     override fun onNext(t: HourlyData) {
                         Log.d(TAG, "getHourlyWeather: onNext/ $t")
+                        Resource.Success(t)
                         setHourlyWeatherData(t)
                     }
 
