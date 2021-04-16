@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -30,6 +31,8 @@ class WeatherFragment : Fragment() {
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
         val root = inflater.inflate(R.layout.fragment_weather, container, false)
         val hourlyRv = root.findViewById<RecyclerView>(R.id.hourly_weather_rv)
+        val background = root.findViewById<FrameLayout>(R.id.bg_weather_layout)
+        background.visibility = View.VISIBLE
         hourlyRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
             when(it.status) {
@@ -42,6 +45,7 @@ class WeatherFragment : Fragment() {
                     Log.d(TAG, "it: $it")
                 }
                 LoadingState.Status.SUCCESS -> {
+                    background.visibility = View.GONE
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
                     val adapter = HourlyRvAdapter(weatherViewModel)
                     hourlyRv.adapter = adapter
