@@ -22,7 +22,7 @@ interface WeatherApiService {
             @Query("language")language: String,
             @Query("details")details: String,
             @Query("metric")metric: String,
-    ): Observable<DailyData>
+    ): Single<DailyData>
     @GET("/forecasts/v1/hourly/12hour/{id}")
     fun getHourlyWeatherFromNetwork(
             @Path("id" )id: String,
@@ -30,14 +30,14 @@ interface WeatherApiService {
             @Query("language")language: String,
             @Query("details")details: String,
             @Query("metric")metric: String,
-    ): Observable<HourlyData>
+    ): Single<HourlyData>
     @GET("/currentconditions/v1/topcities/{id}")
     fun getCurrentWeather(
             @Path("id" )id: String,
             @Query("apikey")apiKey: String,
             @Query("language")language: String,
             @Query("details")details: String
-    ): Observable<CurrentWeather>
+    ): Single<CurrentWeather>
 
 
 
