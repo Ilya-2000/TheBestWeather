@@ -142,7 +142,7 @@ class WeatherSource() {
                 })
     }
 
-   /* fun getWeather(compositeDisposable: CompositeDisposable,
+    fun getWeather(compositeDisposable: CompositeDisposable,
                    weatherRequest: WeatherRequest): Single<Weather> {
         return Single.zip(
                 weatherApiService.getHourlyWeatherFromNetwork(weatherRequest.id,
@@ -153,7 +153,7 @@ class WeatherSource() {
                         weatherRequest.apiKey, weatherRequest.language, weatherRequest.details),
                 Function3<HourlyData, DailyData, CurrentWeather, Weather>{
                     t1: HourlyData, t2: DailyData, t3: CurrentWeather ->
-
+                    createWeatherModel(t1, t2, t3)
                 }
         )
         /*getHourlyWeather(compositeDisposable, weatherRequest)
@@ -161,7 +161,7 @@ class WeatherSource() {
         val request = weatherRequest.copy(id = weatherRequest.id, apiKey = weatherRequest.apiKey, language = weatherRequest.language,
                 details = weatherRequest.details, metric = "")
         getCurrentWeather(compositeDisposable, request)*/
-    }*/
+    }
 
     /*private fun setDailyWeatherData(dailyWeather: DailyData) {
         _dailyWeatherLiveData.value = dailyWeather
@@ -174,6 +174,11 @@ class WeatherSource() {
     private fun setCurrentWeatherData(currentWeather: CurrentWeather) {
         _currentWeatherLiveData.value = currentWeather
     }*/
+
+
+    private fun createWeatherModel(t1: HourlyData, t2: DailyData, t3: CurrentWeather): Weather {
+        return Weather(t1, t2, t3)
+    }
 
 
 }
