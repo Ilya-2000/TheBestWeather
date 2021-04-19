@@ -3,11 +3,14 @@ package com.impact.thebestweather.data.repository
 import android.util.Log
 import com.impact.thebestweather.data.WeatherSource
 import com.impact.thebestweather.models.Resource
+import com.impact.thebestweather.models.weather.Weather
 import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
+import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.functions.Function3
 
 class WeatherRepository() {
     companion object {
@@ -17,7 +20,7 @@ class WeatherRepository() {
         lateinit var hourlyData: HourlyData
         lateinit var currentWeather: CurrentWeather*/
 
-        private fun getDailyWeather(compositeDisposable: CompositeDisposable,
+        /*private fun getDailyWeather(compositeDisposable: CompositeDisposable,
                                     weatherRequest: WeatherRequest): DailyData {
             weatherSource.getDailyWeather(compositeDisposable, weatherRequest)
             Log.d(TAG,"getWeather")
@@ -35,15 +38,8 @@ class WeatherRepository() {
                                       weatherRequest: WeatherRequest): CurrentWeather {
             weatherSource.getCurrentWeather(compositeDisposable, weatherRequest)
             return weatherSource.currentWeatherLiveData.value!!
-        }
+        }*/
 
-        fun getWeather(compositeDisposable: CompositeDisposable,
-        weatherRequest: WeatherRequest) {
-            getHourlyWeather(compositeDisposable, weatherRequest)
-            getDailyWeather(compositeDisposable, weatherRequest)
-            val request = weatherRequest.copy(id = weatherRequest.id, apiKey = weatherRequest.apiKey, language = weatherRequest.language,
-                    details = weatherRequest.details, metric = "")
-            getCurrentWeather(compositeDisposable, request)
-        }
+
     }
 }
