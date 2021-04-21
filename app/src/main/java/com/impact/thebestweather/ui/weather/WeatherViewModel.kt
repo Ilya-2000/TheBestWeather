@@ -13,12 +13,14 @@ import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 class WeatherViewModel : ViewModel() {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    //lateinit var weatherSource: WeatherSource
+    lateinit var weatherSource: WeatherSource
 
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
     val dailyWeatherLiveData: LiveData<DailyData>
@@ -46,18 +48,33 @@ class WeatherViewModel : ViewModel() {
 
     private fun getWeather() {
         try {
+            weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
-            WeatherRepository.getWeather(compositeDisposable, WeatherRequest("289748",
+            /*WeatherRepository.getWeather(compositeDisposable, WeatherRequest("289748",
+                    Constant.API_KEY, "ru",
+                    "false", "true"))*/
+            weatherSource.getWeather(compositeDisposable, WeatherRequest("289748",
                     Constant.API_KEY, "ru",
                     "false", "true"))
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ weather ->
+                        _hourlyWeatherLiveData.postValue(weather.hourlyData)
+                        _dailyWeatherLiveData.postValue(weather.dailyData)
+                        Log.d(TAG, "getWeather:success/ $weather")
+                        _loadingState.value = LoadingState.LOADED
+                    }, { e ->
+                        Log.d(TAG, "getWeather:e/ ${e.message}")
+                        _loadingState.value = LoadingState.error(e.message)
+                    })
 
-            _loadingState.value = LoadingState.LOADED
+           /* _loadingState.value = LoadingState.LOADED
             if (_loadingState.value == LoadingState.LOADED) {
                 _hourlyWeatherLiveData.value
                 /*_dailyWeatherLiveData.value = WeatherRepository.dailyData
                 _hourlyWeatherLiveData.value = WeatherRepository.hourlyData
                 _currentWeatherLiveData.value = WeatherRepository.currentWeather*/
-            }
+            }*/
         } catch (e: Exception) {
             _loadingState.value = LoadingState.error(e.message)
         }

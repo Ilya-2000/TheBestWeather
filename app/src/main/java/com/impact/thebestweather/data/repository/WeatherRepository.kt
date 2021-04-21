@@ -9,10 +9,12 @@ import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.functions.Function3
+import io.reactivex.schedulers.Schedulers
 
-class WeatherRepository() {
+class WeatherRepository(){
     companion object {
         private val TAG = "WeatherRepository"
         private val weatherSource = WeatherSource()
@@ -40,6 +42,20 @@ class WeatherRepository() {
             return weatherSource.currentWeatherLiveData.value!!
         }*/
 
+         /*fun getWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest): Weather {
+            weatherSource.getWeather(compositeDisposable, weatherRequest)
+                    .subscribeOn(Schedulers.newThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ weather ->
+
+                    },{ e ->
+
+                    })
+
+        }*/
+
 
     }
+
+
 }
