@@ -61,6 +61,7 @@ class WeatherViewModel : ViewModel() {
                     .subscribe({ weather ->
                         _hourlyWeatherLiveData.postValue(weather.hourlyData)
                         _dailyWeatherLiveData.postValue(weather.dailyData)
+                        _currentWeatherLiveData.postValue(weather.currentWeather)
                         Log.d(TAG, "getWeather:success/ $weather")
                         _loadingState.value = LoadingState.LOADED
                     }, { e ->
