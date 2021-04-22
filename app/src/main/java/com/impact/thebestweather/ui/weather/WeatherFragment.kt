@@ -11,6 +11,7 @@ import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -19,7 +20,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.HourlyRvAdapter
+import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
+import java.util.zip.Inflater
 
 class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
@@ -32,14 +35,9 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        val root = inflater.inflate(R.layout.fragment_weather, container, false)
-        val hourlyRv = root.findViewById<RecyclerView>(R.id.hourly_weather_rv)
-        val background = root.findViewById<FrameLayout>(R.id.bg_weather_layout)
-        val currentTempText = root.findViewById<TextView>(R.id.current_temp_weather)
-        val currentConditionsText = root.findViewById<TextView>(R.id.current_weather_condition_text)
-        val currentWeatherIcon = root.findViewById<ImageView>(R.id.current_weather_icon)
-        background.visibility = View.VISIBLE
-        hourlyRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+        binding.bgWeatherLayout.visibility = View.VISIBLE
+        binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
             when(it.status) {
                 LoadingState.Status.FAILED -> {
@@ -51,17 +49,21 @@ class WeatherFragment : Fragment() {
                     Log.d(TAG, "it: $it")
                 }
                 LoadingState.Status.SUCCESS -> {
-                    background.visibility = View.GONE
+                    binding.bgWeatherLayout.visibility = View.GONE
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
                     val adapter = HourlyRvAdapter(weatherViewModel)
-                    hourlyRv.adapter = adapter
+                    binding.hourlyWeatherRv.adapter = adapter
                     adapter.notifyDataSetChanged()
                     Log.d(TAG, "it: $it")
-                    currentTempText.text = weatherViewModel.currentWeatherLiveData.value?.get(0)?.Temperature?.Metric?.Value.toString()
-                    currentConditionsText.text = weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherText.toString()
-                    Glide.with(this)
+                    Log.d(TAG, "weather: ${weatherViewModel.dailyWeatherLiveData.value}")
+
+                    weatherViewModel.currentWeatherLiveData.observe(viewLifecycleOwner, Observer {
+
+                        binding.currentWeather = weatherViewModel.currentWeatherLiveData.value?.get(0)
+                    })
+                    /*Glide.with(this)
                         .load(weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherIcon)
-                        .into(currentWeatherIcon)
+                        .into(currentWeatherIcon)*/
                 }
             }
 
@@ -70,6 +72,6 @@ class WeatherFragment : Fragment() {
 
 
 
-        return root
+        return binding.root
     }
 }

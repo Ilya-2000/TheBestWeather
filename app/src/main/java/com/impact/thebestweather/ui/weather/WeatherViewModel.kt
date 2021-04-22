@@ -62,7 +62,7 @@ class WeatherViewModel : ViewModel() {
                         _hourlyWeatherLiveData.postValue(weather.hourlyData)
                         _dailyWeatherLiveData.postValue(weather.dailyData)
                         _currentWeatherLiveData.postValue(weather.currentWeather)
-                        Log.d(TAG, "getWeather:success/ $weather")
+                        Log.d(TAG, "getWeather:success/ ${weather.currentWeather}")
                         _loadingState.value = LoadingState.LOADED
                     }, { e ->
                         Log.d(TAG, "getWeather:e/ ${e.message}")
