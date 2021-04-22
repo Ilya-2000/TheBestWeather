@@ -1,28 +1,38 @@
 package com.impact.thebestweather.adapter
 
+import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.DailyItemBinding
+import com.impact.thebestweather.databinding.HourlyWeatherItemBinding
 import com.impact.thebestweather.models.weather.daily.DailyForecast
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
 class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        TODO("Not yet implemented")
+        val view: DailyItemBinding = DataBindingUtil
+            .inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.hourly_weather_item, parent, false)
+        return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        val item = viewModel.dailyWeatherLiveData.value?.DailyForecasts?.get(position)
+        if (item != null) {
+            holder.bind(item)
+        }
     }
 
-    override fun getItemCount(): Int {
-        TODO("Not yet implemented")
-    }
+    override fun getItemCount(): Int = 5
 
     inner class ViewHolder(var dailyItemBinding: DailyItemBinding): RecyclerView.ViewHolder(dailyItemBinding.root) {
         fun bind(item: DailyForecast) {
-
+            dailyItemBinding.dailyItem = item
+            dailyItemBinding.executePendingBindings()
         }
     }
 }
