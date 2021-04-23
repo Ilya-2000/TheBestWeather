@@ -23,6 +23,8 @@ import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.zip.Inflater
 
 class WeatherFragment : Fragment() {
@@ -74,6 +76,10 @@ class WeatherFragment : Fragment() {
 
                         binding.currentWeather = weatherViewModel.currentWeatherLiveData.value?.get(0)
                     })
+
+                    val sdf = SimpleDateFormat("dd/M/yyyy")
+                    val currentDate = sdf.format(Date())
+                    binding.dateWeatherText.text = currentDate
 
                     /*Glide.with(this)
                         .load(weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherIcon)
