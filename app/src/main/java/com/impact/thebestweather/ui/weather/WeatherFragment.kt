@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.impact.thebestweather.R
+import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
@@ -38,6 +39,7 @@ class WeatherFragment : Fragment() {
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.dailyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
             when(it.status) {
                 LoadingState.Status.FAILED -> {
@@ -60,8 +62,11 @@ class WeatherFragment : Fragment() {
                     binding.bgWeatherLayout.visibility = View.GONE
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
                     val adapter = HourlyRvAdapter(weatherViewModel)
+                    val dailyAdapter = DailyRvAdapter(weatherViewModel)
                     binding.hourlyWeatherRv.adapter = adapter
+                    binding.dailyWeatherRv.adapter = dailyAdapter
                     adapter.notifyDataSetChanged()
+                    dailyAdapter.notifyDataSetChanged()
                     Log.d(TAG, "it: $it")
                     Log.d(TAG, "weather: ${weatherViewModel.dailyWeatherLiveData.value}")
 
@@ -69,6 +74,7 @@ class WeatherFragment : Fragment() {
 
                         binding.currentWeather = weatherViewModel.currentWeatherLiveData.value?.get(0)
                     })
+
                     /*Glide.with(this)
                         .load(weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherIcon)
                         .into(currentWeatherIcon)*/

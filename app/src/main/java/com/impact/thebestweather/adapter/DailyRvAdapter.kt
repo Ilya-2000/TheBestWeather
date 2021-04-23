@@ -16,7 +16,7 @@ class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adap
         val view: DailyItemBinding = DataBindingUtil
             .inflate(
                 LayoutInflater.from(parent.context),
-                R.layout.hourly_weather_item, parent, false)
+                R.layout.daily_weather_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -30,7 +30,7 @@ class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adap
     override fun getItemCount(): Int = 5
 
     inner class ViewHolder(var dailyItemBinding: DailyItemBinding): RecyclerView.ViewHolder(dailyItemBinding.root) {
-        fun bind(item: DailyForecast) {
+        fun bind(item: DailyForecast) = with(dailyItemBinding) {
             dailyItemBinding.dailyItem = item
             dailyItemBinding.executePendingBindings()
         }
