@@ -41,12 +41,20 @@ class WeatherFragment : Fragment() {
         weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
             when(it.status) {
                 LoadingState.Status.FAILED -> {
+                    binding.loadingMessageText.text = it.msg
                     Toast.makeText(requireContext(), it.msg, Toast.LENGTH_LONG).show()
                     Log.d(TAG, "it: $it")
+                    Glide.with(this)
+                            .load(R.drawable.dead_emoji)
+                            .into(binding.imgLoadBg)
                 }
                 LoadingState.Status.RUNNING -> {
                     Toast.makeText(requireContext(), "Loading", Toast.LENGTH_LONG).show()
+                    binding.loadingMessageText.text = it.msg
                     Log.d(TAG, "it: $it")
+                    Glide.with(this)
+                            .load(R.drawable.happy_emoji)
+                            .into(binding.imgLoadBg)
                 }
                 LoadingState.Status.SUCCESS -> {
                     binding.bgWeatherLayout.visibility = View.GONE
