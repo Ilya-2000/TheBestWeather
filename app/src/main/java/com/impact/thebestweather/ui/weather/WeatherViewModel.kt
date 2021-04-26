@@ -39,20 +39,10 @@ class WeatherViewModel : ViewModel() {
         getWeather()
     }
 
-    /*fun getHourly() {
-        weatherSource = WeatherSource()
-        weatherSource.getHourlyWeather(compositeDisposable, WeatherRequest("289748",
-                Constant.API_KEY, "ru",
-                "false", "true"))
-    }*/
-
-    private fun getWeather() {
+     private fun getWeather() {
         try {
             weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
-            /*WeatherRepository.getWeather(compositeDisposable, WeatherRequest("289748",
-                    Constant.API_KEY, "ru",
-                    "false", "true"))*/
             weatherSource.getWeather(compositeDisposable, WeatherRequest("289748",
                     Constant.API_KEY, "ru",
                     "false", "true"))
@@ -68,14 +58,6 @@ class WeatherViewModel : ViewModel() {
                         Log.d(TAG, "getWeather:e/ ${e.message}")
                         _loadingState.value = LoadingState.error(e.message)
                     })
-
-           /* _loadingState.value = LoadingState.LOADED
-            if (_loadingState.value == LoadingState.LOADED) {
-                _hourlyWeatherLiveData.value
-                /*_dailyWeatherLiveData.value = WeatherRepository.dailyData
-                _hourlyWeatherLiveData.value = WeatherRepository.hourlyData
-                _currentWeatherLiveData.value = WeatherRepository.currentWeather*/
-            }*/
         } catch (e: Exception) {
             _loadingState.value = LoadingState.error(e.message)
         }

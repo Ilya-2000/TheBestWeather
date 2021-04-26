@@ -31,6 +31,7 @@ class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
 
+
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
