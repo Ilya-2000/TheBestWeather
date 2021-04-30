@@ -31,27 +31,9 @@ class CityFragment : Fragment() {
         cityViewModel =
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
+
         return binding.root
     }
 
-    private fun observeSearchView(searchView: SearchView) {
-        Observable.create(ObservableOnSubscribe<String> { subscriber ->
-            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                override fun onQueryTextSubmit(newText: String?): Boolean {
-                    newText?.let { subscriber.onNext(it) }
-                    return false
-                }
 
-                override fun onQueryTextChange(query: String?): Boolean {
-                    query?.let { subscriber.onNext(it) }
-                    return false
-                }
-
-            })
-        })
-                .map { text -> text.toLowerCase().trim() }
-                .debounce(100, TimeUnit.MILLISECONDS)
-                .distinct()
-                .subscribe { text -> Log.d(TAG, "text: $text") }
-    }
 }
