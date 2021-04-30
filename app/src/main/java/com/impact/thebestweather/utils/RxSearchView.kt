@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit
 
 class RxSearchView {
     private val TAG = "RxSearchView"
-    private val publishSubject: PublishSubject<String> = PublishSubject.create()
-
-    private fun observeSearchView(searchView: SearchView): Observable<String> {
+    companion object {
+        private val publishSubject: PublishSubject<String> = PublishSubject.create()
+        fun observeSearchView(searchView: SearchView): Observable<String> {
 
             searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
                 override fun onQueryTextSubmit(newText: String?): Boolean {
@@ -23,8 +23,8 @@ class RxSearchView {
                     query?.let { publishSubject.onNext(it) }
                     return false
                 }
-
             })
-        return publishSubject
+            return publishSubject
+        }
     }
 }
