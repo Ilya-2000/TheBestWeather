@@ -7,4 +7,6 @@ import androidx.lifecycle.ViewModel
 class CityViewModel : ViewModel() {
     private val TAG = "CityViewModel"
 
+
+
 }

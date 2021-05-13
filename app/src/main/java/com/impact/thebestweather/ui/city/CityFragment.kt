@@ -49,7 +49,6 @@ class CityFragment : Fragment() {
             .subscribe(
                 {
                     Log.d(TAG, it.toString())
-
                 },
                 {
                     Log.d(TAG, it.toString())
