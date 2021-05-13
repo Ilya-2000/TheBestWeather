@@ -34,17 +34,29 @@ class CityFragment : Fragment() {
         cityViewModel =
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
-
+        observeSearchView(binding.citySearchView)
         return binding.root
     }
 
-    /*private fun observeSearchView(searchView: SearchView) {
-        disposable = RxSearchView.observeSearchView(searchView)
-                .debounce(300, TimeUnit.MILLISECONDS)
-                .distinctUntilChanged()
-                .switchMap(Observable.just())
 
-    }*/
+
+    private fun observeSearchView(searchView: SearchView) {
+        disposable = RxSearchView.observeSearchView(searchView)
+            .debounce(800, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    Log.d(TAG, it.toString())
+
+                },
+                {
+                    Log.d(TAG, it.toString())
+                }
+            )
+
+    }
 
 
 }
