@@ -14,8 +14,7 @@ interface CityApiService {
     fun searchCity(@Query("apikey")apiKey: String,
                    @Query("q")q: String,
                    @Query("language")language: String,
-                   @Query("details")details: String,
-                   @Query("metric")metric: String): Single<Location>
+                   @Query("details")details: String) : Single<Location>
 
 
     companion object {
