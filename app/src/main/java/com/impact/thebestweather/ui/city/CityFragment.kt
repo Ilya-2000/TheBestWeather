@@ -10,11 +10,15 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.impact.thebestweather.R
+import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.databinding.CityFragmentBinding
+import com.impact.thebestweather.models.location.LocationRequest
+import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.RxSearchView
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -25,6 +29,8 @@ class CityFragment : Fragment() {
     private lateinit var cityViewModel: CityViewModel
     private lateinit var disposable: Disposable
     var text: String = ""
+    private val compositeDisposable = CompositeDisposable()
+    lateinit var citySource: CitySource
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -41,14 +47,19 @@ class CityFragment : Fragment() {
 
 
     private fun observeSearchView(searchView: SearchView) {
+        citySource = CitySource()
         disposable = RxSearchView.observeSearchView(searchView)
-            .debounce(800, TimeUnit.MILLISECONDS)
+            .debounce(1000, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 {
                     Log.d(TAG, it.toString())
+                    //cityViewModel.searchCity(it)
+                    citySource.searchCity(compositeDisposable,
+                        LocationRequest(Constant.API_KEY, it, "en", "false")
+                    )
                 },
                 {
                     Log.d(TAG, it.toString())

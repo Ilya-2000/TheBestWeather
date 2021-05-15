@@ -17,7 +17,8 @@ class CityViewModel : ViewModel() {
 
     fun searchCity(text: String) {
         try {
-            citySource.searchCity(compositeDisposable, LocationRequest(Constant.API_KEY, text, "en", "false"))
+            citySource.searchCity(compositeDisposable,
+                LocationRequest(Constant.API_KEY, text, "en", "false"))
         } catch (e: Exception) {
 
         }

@@ -1,6 +1,9 @@
 package com.impact.thebestweather.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationRequest
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.network.WeatherApiService
@@ -14,6 +17,10 @@ class CitySource {
         CityApiService.create()
     }
 
+    private val _cityListLiveData = MutableLiveData<Location>()
+    val cityListLiveData: LiveData<Location>
+        get() = _cityListLiveData
+
     fun searchCity(compositeDisposable: CompositeDisposable, locationRequest: LocationRequest) {
         compositeDisposable.add(cityApiService.searchCity(locationRequest.api,
             locationRequest.queryText,
@@ -23,6 +30,7 @@ class CitySource {
             .subscribe(
                 {
                     Log.d(TAG, it[0].toString())
+                    _cityListLiveData.postValue(it)
                 },
                 {
                     Log.d(TAG, it.message.toString())
