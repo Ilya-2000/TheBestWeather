@@ -8,7 +8,9 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.databinding.CityFragmentBinding
@@ -31,6 +33,7 @@ class CityFragment : Fragment() {
     var text: String = ""
     private val compositeDisposable = CompositeDisposable()
     lateinit var citySource: CitySource
+    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
             inflater: LayoutInflater,
@@ -40,13 +43,21 @@ class CityFragment : Fragment() {
         cityViewModel =
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
-        observeSearchView(binding.citySearchView)
+        cityViewModel.observeSearchView(binding.citySearchView)
+
+        cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
+            if (it != null) {
+                Log.d(TAG, "BRUH $it")
+            }
+        })
+
+
         return binding.root
     }
 
 
 
-    private fun observeSearchView(searchView: SearchView) {
+    /*private fun observeSearchView(searchView: SearchView) {
         citySource = CitySource()
         disposable = RxSearchView.observeSearchView(searchView)
             .debounce(1000, TimeUnit.MILLISECONDS)
@@ -66,7 +77,7 @@ class CityFragment : Fragment() {
                 }
             )
 
-    }
+    }*/
 
 
 }
