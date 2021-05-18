@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationRequest
+import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
+import com.impact.thebestweather.utils.LoadingState
 import com.impact.thebestweather.utils.RxSearchView
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -22,10 +24,18 @@ class CityViewModel : ViewModel() {
     private val compositeDisposable = CompositeDisposable()
     private lateinit var disposable: Disposable
     lateinit var citySource: CitySource
+    private val cityApiService by lazy {
+        CityApiService.create()
+    }
 
     private val _cityListLiveData = MutableLiveData<Location>()
     val cityListLiveData: LiveData<Location>
         get() = _cityListLiveData
+
+    private val _loadLiveData = MutableLiveData<LoadingState>()
+    val loadLiveData: LiveData<LoadingState>
+        get() = _loadLiveData
+
 
     fun getCityList(citySource: CitySource) {
         _cityListLiveData.postValue(citySource.cityListLiveData.value)
@@ -35,6 +45,7 @@ class CityViewModel : ViewModel() {
 
     fun observeSearchView(searchView: SearchView) {
         citySource = CitySource()
+        _loadLiveData.value = LoadingState.LOADING
         disposable = RxSearchView.observeSearchView(searchView)
             .debounce(1000, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
@@ -43,13 +54,13 @@ class CityViewModel : ViewModel() {
             .subscribe(
                 {
                     Log.d(TAG, it.toString())
-                    //cityViewModel.searchCity(it)
-                    citySource.searchCity(compositeDisposable,
-                        LocationRequest(Constant.API_KEY, it, "en", "false"))
-                    getCityList(citySource)
+                    _cityListLiveData.postValue(citySource.searchCity(compositeDisposable,
+                        LocationRequest(Constant.API_KEY, it, "en", "false")).value)
+                    _loadLiveData.value = LoadingState.LOADED
                 },
                 {
                     Log.d(TAG, it.toString())
+                    _loadLiveData.value = LoadingState.error(it.message)
                 }
             )
 

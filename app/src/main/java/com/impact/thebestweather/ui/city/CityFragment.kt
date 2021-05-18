@@ -16,6 +16,7 @@ import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.databinding.CityFragmentBinding
 import com.impact.thebestweather.models.location.LocationRequest
 import com.impact.thebestweather.utils.Constant
+import com.impact.thebestweather.utils.LoadingState
 import com.impact.thebestweather.utils.RxSearchView
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
@@ -44,11 +45,22 @@ class CityFragment : Fragment() {
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
         cityViewModel.observeSearchView(binding.citySearchView)
-
-        cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
-            if (it != null) {
-                Log.d(TAG, "BRUH $it")
+        cityViewModel.loadLiveData.observe(viewLifecycleOwner, Observer {
+            when(it.status) {
+                LoadingState.Status.RUNNING -> {
+                    Log.d(TAG, "Status: $it")
+                }
+                LoadingState.Status.FAILED -> {
+                    Log.d(TAG, "Status: $it")
+                }
+                LoadingState.Status.SUCCESS -> {
+                    Log.d(TAG, "Status: $it")
+                    cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
+                        Log.d(TAG, "BRUH $it")
+                    })
+                }
             }
+
         })
 
 

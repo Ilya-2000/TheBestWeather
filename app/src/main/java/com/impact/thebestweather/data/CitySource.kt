@@ -21,7 +21,7 @@ class CitySource {
     val cityListLiveData: LiveData<Location>
         get() = _cityListLiveData
 
-    fun searchCity(compositeDisposable: CompositeDisposable, locationRequest: LocationRequest) {
+    fun searchCity(compositeDisposable: CompositeDisposable, locationRequest: LocationRequest): LiveData<Location> {
         compositeDisposable.add(cityApiService.searchCity(locationRequest.api,
             locationRequest.queryText,
             locationRequest.language,
@@ -36,6 +36,7 @@ class CitySource {
                     Log.d(TAG, it.message.toString())
                 }
             ))
+        return cityListLiveData
 
     }
 }
