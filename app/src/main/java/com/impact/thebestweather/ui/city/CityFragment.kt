@@ -45,6 +45,14 @@ class CityFragment : Fragment() {
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
         cityViewModel.observeSearchView(binding.citySearchView)
+
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         cityViewModel.loadLiveData.observe(viewLifecycleOwner, Observer {
             when(it.status) {
                 LoadingState.Status.RUNNING -> {
@@ -62,10 +70,8 @@ class CityFragment : Fragment() {
             }
 
         })
-
-
-        return binding.root
     }
+
 
 
 
