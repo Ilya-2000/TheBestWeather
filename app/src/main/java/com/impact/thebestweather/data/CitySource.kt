@@ -12,7 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class CitySource {
-    private val TAG = "CitySource"
+   /* private val TAG = "CitySource"
     private val cityApiService by lazy {
         CityApiService.create()
     }
@@ -21,7 +21,7 @@ class CitySource {
     val cityListLiveData: LiveData<Location>
         get() = _cityListLiveData
 
-    fun searchCity(compositeDisposable: CompositeDisposable, locationRequest: LocationRequest): LiveData<Location> {
+    fun searchCity(compositeDisposable: CompositeDisposable, locationRequest: LocationRequest) {
         compositeDisposable.add(cityApiService.searchCity(locationRequest.api,
             locationRequest.queryText,
             locationRequest.language,
@@ -36,7 +36,7 @@ class CitySource {
                     Log.d(TAG, it.message.toString())
                 }
             ))
-        return cityListLiveData
 
-    }
+
+    }*/
 }

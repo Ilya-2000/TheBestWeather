@@ -54,9 +54,13 @@ class CityViewModel : ViewModel() {
             .subscribe(
                 {
                     Log.d(TAG, it.toString())
-                    _cityListLiveData.postValue(citySource.searchCity(compositeDisposable,
-                        LocationRequest(Constant.API_KEY, it, "en", "false")).value)
+                    /*_cityListLiveData.postValue(citySource.searchCity(compositeDisposable,
+                        LocationRequest(Constant.API_KEY, it, "en", "false")).value)*/
+                    if (it != null) {
+                        searchCities(it)
+                    }
                     _loadLiveData.value = LoadingState.LOADED
+
                 },
                 {
                     Log.d(TAG, it.toString())
@@ -64,6 +68,24 @@ class CityViewModel : ViewModel() {
                 }
             )
 
+    }
+
+
+    private fun searchCities(query: String) {
+        compositeDisposable.add(cityApiService.searchCity(Constant.API_KEY,
+            query, "en", "false")
+            .subscribeOn(Schedulers.io())
+            .subscribe(
+                {
+                    Log.d(TAG, it[0].toString())
+                    _cityListLiveData.postValue(it)
+                    //_loadLiveData.value = LoadingState.LOADED
+                },
+                {
+                    Log.d(TAG, it.message.toString())
+                    _loadLiveData.value = LoadingState.error(it.message)
+                }
+            ))
     }
 
 
