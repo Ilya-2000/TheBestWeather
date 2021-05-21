@@ -10,8 +10,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
+import com.impact.thebestweather.adapter.CityListRvAdapter
 import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.databinding.CityFragmentBinding
 import com.impact.thebestweather.models.location.LocationRequest
@@ -45,6 +48,7 @@ class CityFragment : Fragment() {
                 ViewModelProvider(this).get(CityViewModel::class.java)
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
         cityViewModel.observeSearchView(binding.citySearchView)
+        recyclerView = binding.cityListRv
 
 
 
@@ -65,6 +69,9 @@ class CityFragment : Fragment() {
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
+                        val adapter = CityListRvAdapter(cityViewModel)
+                        recyclerView.layoutManager = GridLayoutManager(context, 2)
+                        recyclerView.adapter = adapter
                     })
                 }
             }

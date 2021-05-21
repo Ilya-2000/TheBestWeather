@@ -37,10 +37,10 @@ class CityViewModel : ViewModel() {
         get() = _loadLiveData
 
 
-    fun getCityList(citySource: CitySource) {
+    /*fun getCityList(citySource: CitySource) {
         _cityListLiveData.postValue(citySource.cityListLiveData.value)
         Log.d(TAG, "getCityList ${citySource.cityListLiveData.value}")
-    }
+    }*/
 
 
     fun observeSearchView(searchView: SearchView) {
