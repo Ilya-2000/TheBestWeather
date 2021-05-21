@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data class="cityCardBinding">
+    <data class="СityCardBinding">
         <variable
             name="cityItem"
             type="com.impact.thebestweather.models.location.LocationItem" />

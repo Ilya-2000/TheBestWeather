@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
-import com.impact.thebestweather.databinding.cityCardBinding
+import com.impact.thebestweather.databinding.СityCardBinding
 import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.ui.city.CityViewModel
 import java.util.zip.Inflater
@@ -13,7 +13,7 @@ import java.util.zip.Inflater
 class CityListRvAdapter(val viewModel: CityViewModel): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view : cityCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.favorite_city_card,
+        val view : СityCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.favorite_city_card,
             parent,
             false)
         return ViewHolder(view)
@@ -27,10 +27,16 @@ class CityListRvAdapter(val viewModel: CityViewModel): RecyclerView.Adapter<City
         }
     }
 
-    override fun getItemCount(): Int = 100
+    override fun getItemCount(): Int {
+        if (viewModel.cityListLiveData.value?.size != null) {
+            return viewModel.cityListLiveData.value!!.size
+        } else {
+            return 0
+        }
+    }
 
 
-    inner class ViewHolder(private val cityCardBinding: cityCardBinding) : RecyclerView.ViewHolder(cityCardBinding.root) {
+    inner class ViewHolder(private val cityCardBinding: СityCardBinding) : RecyclerView.ViewHolder(cityCardBinding.root) {
         fun bind(item: LocationItem) = with(cityCardBinding){
             cityCardBinding.cityItem = item
             cityCardBinding.executePendingBindings()
