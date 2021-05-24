@@ -72,6 +72,7 @@ class CityFragment : Fragment() {
                         val adapter = CityListRvAdapter(cityViewModel)
                         recyclerView.layoutManager = GridLayoutManager(context, 2)
                         recyclerView.adapter = adapter
+                        adapter.notifyDataSetChanged()
                     })
                 }
             }
