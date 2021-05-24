@@ -11,6 +11,7 @@ import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.models.location.LocationRequest
+import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
@@ -42,6 +43,9 @@ class CityViewModel : ViewModel() {
     private val _selectedCityLiveData = MutableLiveData<LocationItem>()
     val selectedCityLiveData: LiveData<LocationItem>
         get() = _selectedCityLiveData
+    private val _weatherRequestLiveData = MutableLiveData<WeatherRequest>()
+    val weatherRequestLiveData: LiveData<WeatherRequest>
+        get() = _weatherRequestLiveData
 
     fun observeSearchView(searchView: SearchView) {
         citySource = CitySource()
@@ -92,6 +96,18 @@ class CityViewModel : ViewModel() {
         _selectedCityLiveData.value = cityListLiveData.value?.get(position)
         Log.d(TAG, selectedCityLiveData.value.toString())
         navController.navigate(R.id.action_navigation_city_to_navigation_home)
+    }
+
+    fun createWeatherRequest() {
+        val weatherRequest = selectedCityLiveData.value?.let {
+            WeatherRequest(
+                it.Key,
+                Constant.API_KEY,
+                "en",
+                "false",
+                "true"
+            )
+        }
     }
 
 
