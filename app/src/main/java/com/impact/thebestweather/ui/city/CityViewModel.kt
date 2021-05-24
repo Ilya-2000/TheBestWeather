@@ -76,20 +76,25 @@ class CityViewModel : ViewModel() {
 
 
     private fun searchCities(query: String) {
-        compositeDisposable.add(cityApiService.searchCity(Constant.API_KEY,
-            query, "en", "false")
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                {
-                    Log.d(TAG, it[0].toString())
-                    _cityListLiveData.postValue(it)
-                    //_loadLiveData.value = LoadingState.LOADED
-                },
-                {
-                    Log.d(TAG, it.message.toString())
-                    _loadLiveData.value = LoadingState.error(it.message)
-                }
-            ))
+        try {
+            compositeDisposable.add(cityApiService.searchCity(
+                Constant.API_KEY,
+                query, "en", "false"
+            )
+                .subscribeOn(Schedulers.io())
+                .subscribe(
+                    {
+                        //Log.d(TAG, it[0].toString())
+                        _cityListLiveData.postValue(it)
+                    },
+                    {
+                        Log.d(TAG, it.message.toString())
+                        _loadLiveData.value = LoadingState.error(it.message)
+                    }
+                ))
+        }catch (e: Exception) {
+            Log.d(TAG, e.message.toString())
+        }
     }
 
     fun setSelectedCity(position: Int, navController: NavController) {
@@ -107,6 +112,7 @@ class CityViewModel : ViewModel() {
                 "false",
                 "true"
             )
+            //оставить до создания настроек
         }
     }
 
