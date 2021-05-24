@@ -15,7 +15,11 @@
         android:id="@+id/navigation_city"
         android:name="com.impact.thebestweather.ui.city.CityFragment"
         android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_city" />
+        tools:layout="@layout/fragment_city" >
+        <action
+            android:id="@+id/action_navigation_city_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_settings"

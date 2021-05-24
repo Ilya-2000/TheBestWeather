@@ -10,6 +10,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -31,7 +33,7 @@ import java.util.concurrent.TimeUnit
 
 class CityFragment : Fragment() {
     private val TAG = "CityFragment"
-
+    private lateinit var navController: NavController
     private lateinit var cityViewModel: CityViewModel
     private lateinit var disposable: Disposable
     var text: String = ""
@@ -49,6 +51,8 @@ class CityFragment : Fragment() {
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
         cityViewModel.observeSearchView(binding.citySearchView)
         recyclerView = binding.cityListRv
+        navController = findNavController()
+
 
 
 
@@ -69,7 +73,7 @@ class CityFragment : Fragment() {
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
-                        val adapter = CityListRvAdapter(cityViewModel)
+                        val adapter = CityListRvAdapter(cityViewModel, navController)
                         recyclerView.layoutManager = GridLayoutManager(context, 2)
                         recyclerView.adapter = adapter
                         adapter.notifyDataSetChanged()

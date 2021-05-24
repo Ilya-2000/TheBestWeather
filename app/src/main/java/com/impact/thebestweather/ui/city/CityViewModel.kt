@@ -5,8 +5,11 @@ import android.widget.SearchView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.navigation.NavController
+import com.impact.thebestweather.R
 import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.models.location.Location
+import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.models.location.LocationRequest
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
@@ -36,12 +39,9 @@ class CityViewModel : ViewModel() {
     val loadLiveData: LiveData<LoadingState>
         get() = _loadLiveData
 
-
-    /*fun getCityList(citySource: CitySource) {
-        _cityListLiveData.postValue(citySource.cityListLiveData.value)
-        Log.d(TAG, "getCityList ${citySource.cityListLiveData.value}")
-    }*/
-
+    private val _selectedCityLiveData = MutableLiveData<LocationItem>()
+    val selectedCityLiveData: LiveData<LocationItem>
+        get() = _selectedCityLiveData
 
     fun observeSearchView(searchView: SearchView) {
         citySource = CitySource()
@@ -86,6 +86,12 @@ class CityViewModel : ViewModel() {
                     _loadLiveData.value = LoadingState.error(it.message)
                 }
             ))
+    }
+
+    fun setSelectedCity(position: Int, navController: NavController) {
+        _selectedCityLiveData.value = cityListLiveData.value?.get(position)
+        Log.d(TAG, selectedCityLiveData.value.toString())
+        navController.navigate(R.id.action_navigation_city_to_navigation_home)
     }
 
 
