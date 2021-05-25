@@ -20,10 +20,9 @@
             android:id="@+id/action_navigation_city_to_navigation_home"
             app:destination="@id/navigation_home" />
     </fragment>
-
     <fragment
         android:id="@+id/navigation_settings"
         android:name="com.impact.thebestweather.ui.settings.SettingsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_settings" />
+        android:label="SettingsFragment" />
+
 </navigation>
