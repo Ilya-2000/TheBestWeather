@@ -30,7 +30,7 @@
             android:id="@+id/country_city_card_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{cityItem.country.englishName + cityItem.type}"
+            android:text="@{cityItem.country.englishName +'\n'+ cityItem.administrativeArea.englishName + '\n' + cityItem.administrativeArea.englishType}"
             android:textSize="16sp"
             android:layout_gravity="center"
             android:textColor="@color/white"
