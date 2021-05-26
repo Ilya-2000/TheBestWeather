@@ -89,7 +89,7 @@ class CityViewModel : ViewModel() {
                     },
                     {
                         Log.d(TAG, it.message.toString())
-                        _loadLiveData.value = LoadingState.error(it.message)
+                        _loadLiveData.postValue(LoadingState.error(it.message))
                     }
                 ))
         }catch (e: Exception) {

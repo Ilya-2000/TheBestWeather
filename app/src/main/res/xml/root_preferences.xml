@@ -3,15 +3,10 @@
     <PreferenceCategory app:title="Общие настройки">
 
         <ListPreference
-            app:defaultValue="reply"
-            app:entries="@array/reply_entries"
-            app:entryValues="@array/reply_values"
-            app:key="reply"
-            app:title="Язык"
-            app:useSimpleSummaryProvider="true" />
-
-        <EditTextPreference
-            app:key="signature"
+            app:defaultValue="metric"
+            app:entries="@array/type_entries"
+            app:entryValues="@array/type_values"
+            app:key="metric"
             app:title="Тип данных погоды"
             app:useSimpleSummaryProvider="true" />
 
@@ -21,14 +16,13 @@
     <PreferenceCategory app:title="Локация">
 
         <SwitchPreferenceCompat
-            app:key="sync"
+            app:key="defaultCity"
             app:title="Установить город по умолчанию" />
         <EditTextPreference
-            app:key="signature"
+            app:key="defaultCityText"
             app:title="Город по умолчанию"
             app:useSimpleSummaryProvider="true" />
 
 
     </PreferenceCategory>
-
 </PreferenceScreen>
