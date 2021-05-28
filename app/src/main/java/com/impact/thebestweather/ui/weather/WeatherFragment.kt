@@ -26,7 +26,6 @@ import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Inflater
@@ -35,6 +34,11 @@ class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var weatherRequest: WeatherRequest
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        getWeatherRequest()
+    }
 
 
     override fun onCreateView(
@@ -114,6 +118,8 @@ class WeatherFragment : Fragment() {
             "false",
                 stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
             )
+
+            Log.d(TAG, "weatherRequest $weatherRequest")
         }
     }
 }
