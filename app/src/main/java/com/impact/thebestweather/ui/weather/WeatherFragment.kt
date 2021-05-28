@@ -23,7 +23,10 @@ import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
+import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
+import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Inflater
@@ -31,6 +34,7 @@ import java.util.zip.Inflater
 class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var weatherRequest: WeatherRequest
 
 
     override fun onCreateView(
@@ -40,7 +44,6 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -96,5 +99,21 @@ class WeatherFragment : Fragment() {
 
 
         return binding.root
+    }
+
+    private fun getWeatherRequest() {
+        val stringBuilder = StringBuilder()
+        val boolean = false
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sharedPreferences.getBoolean("defaultCity", boolean)
+        if (boolean) {
+            weatherRequest = WeatherRequest(
+                stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
+                Constant.API_KEY,
+            "en",
+            "false",
+                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+            )
+        }
     }
 }

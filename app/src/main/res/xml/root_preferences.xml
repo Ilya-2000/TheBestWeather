@@ -6,7 +6,7 @@
             app:defaultValue="metric"
             app:entries="@array/type_entries"
             app:entryValues="@array/type_values"
-            app:key="metric"
+            app:key="metricValues"
             app:title="Тип данных погоды"
             app:useSimpleSummaryProvider="true" />
 

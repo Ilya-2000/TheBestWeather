@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import java.lang.StringBuilder
 import java.util.concurrent.TimeUnit
 
 class CityFragment : Fragment() {
@@ -52,8 +54,6 @@ class CityFragment : Fragment() {
         cityViewModel.observeSearchView(binding.citySearchView)
         recyclerView = binding.cityListRv
         navController = findNavController()
-
-
 
 
         return binding.root
