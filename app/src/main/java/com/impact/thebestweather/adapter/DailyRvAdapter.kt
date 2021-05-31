@@ -1,5 +1,6 @@
 package com.impact.thebestweather.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -31,8 +32,15 @@ class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adap
 
     inner class ViewHolder(var dailyItemBinding: DailyItemBinding): RecyclerView.ViewHolder(dailyItemBinding.root) {
         fun bind(item: DailyForecast) = with(dailyItemBinding) {
+            val localDate = item.Date
+            dailyItemBinding.date = cutDate(localDate)
+
             dailyItemBinding.dailyItem = item
             dailyItemBinding.executePendingBindings()
         }
+    }
+
+    private fun cutDate(localDate: String): String {
+        return localDate.substring(0,10)
     }
 }

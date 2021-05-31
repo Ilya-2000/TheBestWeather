@@ -5,6 +5,9 @@
         <variable
             name="hourly"
             type="com.impact.thebestweather.models.weather.hourly.HourlyDataItem" />
+        <variable
+            name="date"
+            type="String" />
     </data>
 
     <LinearLayout
@@ -19,7 +22,7 @@
             android:id="@+id/time_hourly_weather_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{hourly.dateTime}"
+            android:text="@{date}"
             android:textColor="@color/white"
             android:layout_gravity="center_horizontal"
             android:layout_margin="8dp" />

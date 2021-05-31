@@ -38,8 +38,12 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
 
         fun bind(item: HourlyDataItem) = with(binding) {
             binding.hourly = item
+            binding.date = cutDate(item.DateTime)
             binding.executePendingBindings()
         }
 
+    }
+    private fun cutDate(localDate: String): String {
+        return localDate.substring(11,16)
     }
 }
