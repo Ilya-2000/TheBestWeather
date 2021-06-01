@@ -33,11 +33,11 @@ import java.util.zip.Inflater
 class WeatherFragment : Fragment() {
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
-    private lateinit var weatherRequest: WeatherRequest
+    //private lateinit var weatherRequest: WeatherRequest
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        getWeatherRequest()
+
     }
 
 
@@ -48,6 +48,7 @@ class WeatherFragment : Fragment() {
     ): View? {
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
+        getWeatherRequest()?.let { weatherViewModel.getWeather(it) }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -105,21 +106,29 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
-    private fun getWeatherRequest() {
+    private fun getWeatherRequest(): WeatherRequest? {
         val stringBuilder = StringBuilder()
-        val boolean = false
+        val boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPreferences.getBoolean("defaultCity", boolean)
-        if (boolean) {
-            weatherRequest = WeatherRequest(
+
+        Log.d(TAG, "defaultCity: $boolean")
+        if (sharedPreferences.getBoolean("defaultCity", boolean == true)) {
+            return WeatherRequest(
                 stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
                 Constant.API_KEY,
             "en",
             "false",
                 stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
             )
-
-            Log.d(TAG, "weatherRequest $weatherRequest")
+        } else if (!sharedPreferences.getBoolean("defaultCity", boolean == true)) {
+            return WeatherRequest(
+                stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
+                Constant.API_KEY,
+                "en",
+                "false",
+                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+            )
         }
+        return null
     }
 }

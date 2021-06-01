@@ -35,11 +35,8 @@ class WeatherViewModel : ViewModel() {
     val currentWeatherLiveData: LiveData<CurrentWeather>
         get() = _currentWeatherLiveData
 
-    init {
-        getWeather()
-    }
 
-     private fun getWeather() {
+    fun getWeather(weatherRequest: WeatherRequest) {
         try {
             weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
