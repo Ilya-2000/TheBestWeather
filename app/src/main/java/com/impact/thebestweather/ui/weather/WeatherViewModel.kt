@@ -40,9 +40,7 @@ class WeatherViewModel : ViewModel() {
         try {
             weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
-            weatherSource.getWeather(compositeDisposable, WeatherRequest("289748",
-                    Constant.API_KEY, "ru",
-                    "false", "true"))
+            weatherSource.getWeather(compositeDisposable, weatherRequest)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->

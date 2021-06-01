@@ -84,30 +84,4 @@ class CityFragment : Fragment() {
         })
     }
 
-
-
-
-    /*private fun observeSearchView(searchView: SearchView) {
-        citySource = CitySource()
-        disposable = RxSearchView.observeSearchView(searchView)
-            .debounce(1000, TimeUnit.MILLISECONDS)
-            .distinctUntilChanged()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                {
-                    Log.d(TAG, it.toString())
-                    //cityViewModel.searchCity(it)
-                    citySource.searchCity(compositeDisposable,
-                        LocationRequest(Constant.API_KEY, it, "en", "false")
-                    )
-                },
-                {
-                    Log.d(TAG, it.toString())
-                }
-            )
-
-    }*/
-
-
 }
