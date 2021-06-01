@@ -1,5 +1,6 @@
 package com.impact.thebestweather.ui.city
 
+import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
 import androidx.lifecycle.LiveData
@@ -58,8 +59,6 @@ class CityViewModel : ViewModel() {
             .subscribe(
                 {
                     Log.d(TAG, it.toString())
-                    /*_cityListLiveData.postValue(citySource.searchCity(compositeDisposable,
-                        LocationRequest(Constant.API_KEY, it, "en", "false")).value)*/
                     if (it != null) {
                         searchCities(it)
                     }
@@ -84,7 +83,6 @@ class CityViewModel : ViewModel() {
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                     {
-                        //Log.d(TAG, it[0].toString())
                         _cityListLiveData.postValue(it)
                     },
                     {
@@ -98,24 +96,16 @@ class CityViewModel : ViewModel() {
     }
 
     fun setSelectedCity(position: Int, navController: NavController) {
-        _selectedCityLiveData.value = cityListLiveData.value?.get(position)
+        //_selectedCityLiveData.value = cityListLiveData.value?.get(position)
+        val bundle = Bundle()
+        bundle.getString("keyCity", cityListLiveData.value?.get(position)?.Key)
+        bundle.getString("nameCity", cityListLiveData.value?.get(position)?.EnglishName)
         Log.d(TAG, selectedCityLiveData.value.toString())
-        navController.navigate(R.id.action_navigation_city_to_navigation_home)
+        navController.navigate(R.id.action_navigation_city_to_navigation_home, bundle)
     }
-
-    fun createWeatherRequest() {
-        val weatherRequest = selectedCityLiveData.value?.let {
-            WeatherRequest(
-                it.Key,
-                Constant.API_KEY,
-                "en",
-                "false",
-                "true"
-            )
-            //оставить до создания настроек
-        }
-    }
-
 
 
 }
+
+
+

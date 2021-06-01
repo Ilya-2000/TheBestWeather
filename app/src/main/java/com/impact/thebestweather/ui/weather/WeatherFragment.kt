@@ -29,15 +29,21 @@ import com.impact.thebestweather.utils.LoadingState
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.zip.Inflater
+private const val ARG_PARAM1 = "keyCity"
+private const val ARG_PARAM2 = "nameCity"
 
 class WeatherFragment : Fragment() {
+    private var cityKey: String? = null
+    private var city: String? = null
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
-    //private lateinit var weatherRequest: WeatherRequest
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            cityKey = it.getString(ARG_PARAM1)
+            city = it.getString(ARG_PARAM2)
+        }
     }
 
 
@@ -50,6 +56,7 @@ class WeatherFragment : Fragment() {
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
         getWeatherRequest()?.let { weatherViewModel.getWeather(it) }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+        binding.cityWeatherText.text = city
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.dailyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -121,14 +128,27 @@ class WeatherFragment : Fragment() {
                 stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
             )
         } else if (!sharedPreferences.getBoolean("defaultCity", boolean == true)) {
-            return WeatherRequest(
-                stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
-                Constant.API_KEY,
-                "en",
-                "false",
-                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-            )
+            return cityKey?.let {
+                WeatherRequest(
+                    it,
+                    Constant.API_KEY,
+                    "en",
+                    "false",
+                    stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+                )
+            }
         }
         return null
     }
+
+    /*companion object {
+        @JvmStatic
+        fun newInstance(param1: String, param2: String) =
+            WeatherFragment().apply {
+                arguments = Bundle().apply {
+                    putString(ARG_PARAM1, param1)
+                    putString(ARG_PARAM2, param2)
+                }
+            }
+    }*/
 }
