@@ -11,6 +11,7 @@ import com.impact.thebestweather.models.weather.WeatherRequest
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
+import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -21,6 +22,10 @@ class WeatherViewModel : ViewModel() {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
     lateinit var weatherSource: WeatherSource
+
+    val cityApiService by lazy {
+        CityApiService.create()
+    }
 
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
     val dailyWeatherLiveData: LiveData<DailyData>
@@ -57,12 +62,6 @@ class WeatherViewModel : ViewModel() {
             _loadingState.value = LoadingState.error(e.message)
         }
     }
-
-
-
-
-
-
 
 
 }

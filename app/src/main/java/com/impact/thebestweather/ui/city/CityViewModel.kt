@@ -97,7 +97,6 @@ class CityViewModel : ViewModel() {
     }
 
     fun setSelectedCity(position: Int, navController: NavController) {
-        //_selectedCityLiveData.value = cityListLiveData.value?.get(position)
         val bundle = bundleOf(
             "keyCity" to cityListLiveData.value?.get(position)?.Key,
             "nameCity" to cityListLiveData.value?.get(position)?.EnglishName)

@@ -99,10 +99,6 @@ class WeatherFragment : Fragment() {
                     val sdf = SimpleDateFormat("dd/M/yyyy")
                     val currentDate = sdf.format(Date())
                     binding.dateWeatherText.text = currentDate
-
-                    /*Glide.with(this)
-                        .load(weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherIcon)
-                        .into(currentWeatherIcon)*/
                 }
             }
 
