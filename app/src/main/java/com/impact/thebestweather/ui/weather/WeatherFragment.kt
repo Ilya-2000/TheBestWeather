@@ -1,6 +1,7 @@
 package com.impact.thebestweather.ui.weather
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -114,28 +115,18 @@ class WeatherFragment : Fragment() {
         val stringBuilder = StringBuilder()
         val boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-
+        val shp = activity?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
+        val lastCity = shp?.getString("lastCityKey", "")
         Log.d(TAG, "defaultCity: $boolean")
-        if (sharedPreferences.getBoolean("defaultCity", boolean == true)) {
-            if ( stringBuilder.append(sharedPreferences.getString("cityKey", "")).isNotEmpty()) {
+        if (!lastCity.isNullOrEmpty()) {
                 WeatherRequest(
-                    stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
+                    lastCity,
                     Constant.API_KEY,
                     "en",
                     "false",
                     stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
                 )
-            } else {
-                val city = sharedPreferences.getString("defaultCityText", "")
-            }
-            /*return WeatherRequest(
-                stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
-                Constant.API_KEY,
-            "en",
-            "false",
-                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-            )*/
-        } else if (!sharedPreferences.getBoolean("defaultCity", boolean == true)) {
+        } else {
             return cityKey?.let {
                 WeatherRequest(
                     it,
@@ -145,6 +136,11 @@ class WeatherFragment : Fragment() {
                     stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
                 )
             }
+            /*val shared = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
+            with(shared.edit()) {
+                putString("lastCityKey", cityKey)
+                apply()
+            }*/
         }
         return null
     }
