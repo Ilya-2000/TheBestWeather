@@ -44,6 +44,7 @@ class WeatherFragment : Fragment() {
             cityKey = it.getString(ARG_PARAM1)
             city = it.getString(ARG_PARAM2)
         }
+        Log.d(TAG, "onCreate: cityKey = $cityKey city = $city")
     }
 
 
@@ -120,13 +121,24 @@ class WeatherFragment : Fragment() {
 
         Log.d(TAG, "defaultCity: $boolean")
         if (sharedPreferences.getBoolean("defaultCity", boolean == true)) {
-            return WeatherRequest(
+            if ( stringBuilder.append(sharedPreferences.getString("cityKey", "")).isNotEmpty()) {
+                WeatherRequest(
+                    stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
+                    Constant.API_KEY,
+                    "en",
+                    "false",
+                    stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+                )
+            } else {
+                val city = sharedPreferences.getString("defaultCityText", "")
+            }
+            /*return WeatherRequest(
                 stringBuilder.append(sharedPreferences.getString("cityKey", "")).toString(),
                 Constant.API_KEY,
             "en",
             "false",
                 stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-            )
+            )*/
         } else if (!sharedPreferences.getBoolean("defaultCity", boolean == true)) {
             return cityKey?.let {
                 WeatherRequest(
@@ -141,7 +153,7 @@ class WeatherFragment : Fragment() {
         return null
     }
 
-    /*companion object {
+    companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             WeatherFragment().apply {
@@ -150,5 +162,5 @@ class WeatherFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
-    }*/
+    }
 }

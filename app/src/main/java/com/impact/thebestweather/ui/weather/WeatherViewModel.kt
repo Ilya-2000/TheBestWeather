@@ -56,10 +56,10 @@ class WeatherViewModel : ViewModel() {
         } catch (e: Exception) {
             _loadingState.value = LoadingState.error(e.message)
         }
-
-
-
     }
+
+
+
 
 
 

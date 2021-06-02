@@ -3,6 +3,7 @@ package com.impact.thebestweather.ui.city
 import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
+import androidx.core.os.bundleOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -97,9 +98,9 @@ class CityViewModel : ViewModel() {
 
     fun setSelectedCity(position: Int, navController: NavController) {
         //_selectedCityLiveData.value = cityListLiveData.value?.get(position)
-        val bundle = Bundle()
-        bundle.getString("keyCity", cityListLiveData.value?.get(position)?.Key)
-        bundle.getString("nameCity", cityListLiveData.value?.get(position)?.EnglishName)
+        val bundle = bundleOf(
+            "keyCity" to cityListLiveData.value?.get(position)?.Key,
+            "nameCity" to cityListLiveData.value?.get(position)?.EnglishName)
         Log.d(TAG, selectedCityLiveData.value.toString())
         navController.navigate(R.id.action_navigation_city_to_navigation_home, bundle)
     }
