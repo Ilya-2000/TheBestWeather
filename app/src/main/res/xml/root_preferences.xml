@@ -13,16 +13,4 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Локация">
-
-        <SwitchPreferenceCompat
-            app:key="defaultCity"
-            app:title="Установить город по умолчанию" />
-        <EditTextPreference
-            app:key="defaultCityText"
-            app:title="Город по умолчанию"
-            app:useSimpleSummaryProvider="true" />
-
-
-    </PreferenceCategory>
 </PreferenceScreen>
