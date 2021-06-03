@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.impact.thebestweather.ui.weather.WeatherFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_city"
+            app:destination="@id/navigation_city" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_city"

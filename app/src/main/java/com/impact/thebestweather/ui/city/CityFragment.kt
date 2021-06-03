@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -73,10 +72,14 @@ class CityFragment : Fragment() {
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
-                        val adapter = CityListRvAdapter(cityViewModel, navController)
+                        val adapter = context?.let { it1 ->
+                            CityListRvAdapter(cityViewModel, navController,
+                                it1
+                            )
+                        }
                         recyclerView.layoutManager = GridLayoutManager(context, 2)
                         recyclerView.adapter = adapter
-                        adapter.notifyDataSetChanged()
+                        adapter?.notifyDataSetChanged()
                     })
                 }
             }

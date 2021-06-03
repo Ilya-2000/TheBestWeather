@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -16,7 +17,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,6 +40,7 @@ class WeatherFragment : Fragment() {
     private var city: String? = null
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +57,7 @@ class WeatherFragment : Fragment() {
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
+        navController = findNavController()
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
         getWeatherRequest()?.let { weatherViewModel.getWeather(it) }
@@ -118,16 +122,18 @@ class WeatherFragment : Fragment() {
         val shp = activity?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
         val lastCity = shp?.getString("lastCityKey", "")
         Log.d(TAG, "defaultCity: $boolean")
-        if (!lastCity.isNullOrEmpty()) {
-                WeatherRequest(
+        if (lastCity.isNullOrEmpty()) {
+            navController.navigate(R.id.action_navigation_home_to_navigation_city)
+
+                /*WeatherRequest(
                     lastCity,
                     Constant.API_KEY,
                     "en",
                     "false",
                     stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-                )
+                )*/
         } else {
-            return cityKey?.let {
+            /*return cityKey?.let {
                 WeatherRequest(
                     it,
                     Constant.API_KEY,
@@ -135,7 +141,15 @@ class WeatherFragment : Fragment() {
                     "false",
                     stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
                 )
-            }
+            }*/
+            return WeatherRequest(
+                lastCity,
+                Constant.API_KEY,
+                "en",
+                "false",
+                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+            )
+
             /*val shared = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
             with(shared.edit()) {
                 putString("lastCityKey", cityKey)

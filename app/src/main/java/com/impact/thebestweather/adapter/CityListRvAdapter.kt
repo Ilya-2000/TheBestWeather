@@ -1,5 +1,7 @@
 package com.impact.thebestweather.adapter
 
+import android.content.Context
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -11,7 +13,7 @@ import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.ui.city.CityViewModel
 import java.util.zip.Inflater
 
-class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavController): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
+class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavController, val context: Context): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view : СityCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.favorite_city_card,
@@ -28,6 +30,10 @@ class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavCont
         }
         holder.itemView.setOnClickListener {
             viewModel.setSelectedCity(position, navController)
+            val shp = context.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
+            val edit = shp.edit()
+            edit.putString("lastCityKey", item?.Key)
+            edit.apply()
         }
     }
 
