@@ -120,9 +120,10 @@ class WeatherFragment : Fragment() {
         val boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val shp = activity?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
-        val lastCity = shp?.getString("lastCityKey", "")
+        val lastCityKey = shp?.getString("lastCityKey", "")
+        val lastCityName = shp?.getString("lastCityName", "")
         Log.d(TAG, "defaultCity: $boolean")
-        if (lastCity.isNullOrEmpty()) {
+        if (lastCityKey.isNullOrEmpty()) {
             navController.navigate(R.id.action_navigation_home_to_navigation_city)
 
                 /*WeatherRequest(
@@ -133,17 +134,9 @@ class WeatherFragment : Fragment() {
                     stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
                 )*/
         } else {
-            /*return cityKey?.let {
-                WeatherRequest(
-                    it,
-                    Constant.API_KEY,
-                    "en",
-                    "false",
-                    stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-                )
-            }*/
+            city = lastCityName
             return WeatherRequest(
-                lastCity,
+                lastCityKey,
                 Constant.API_KEY,
                 "en",
                 "false",

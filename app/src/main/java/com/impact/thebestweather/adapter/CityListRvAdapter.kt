@@ -33,6 +33,7 @@ class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavCont
             val shp = context.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
             val edit = shp.edit()
             edit.putString("lastCityKey", item?.Key)
+            edit.putString("lastCityName", item?.EnglishName)
             edit.apply()
         }
     }
