@@ -60,7 +60,9 @@ class WeatherFragment : Fragment() {
         navController = findNavController()
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        getWeatherRequest()?.let { weatherViewModel.getWeather(it) }
+        getWeatherRequest()?.let { weatherViewModel.getWeather(it)
+            Log.d(TAG, "weather: $it")
+        }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         binding.cityWeatherText.text = city
         binding.bgWeatherLayout.visibility = View.VISIBLE
@@ -117,7 +119,7 @@ class WeatherFragment : Fragment() {
 
     private fun getWeatherRequest(): WeatherRequest? {
         val stringBuilder = StringBuilder()
-        val boolean: Boolean? = null
+        var boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val shp = activity?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
         val lastCityKey = shp?.getString("lastCityKey", "")
@@ -125,29 +127,19 @@ class WeatherFragment : Fragment() {
         Log.d(TAG, "defaultCity: $boolean")
         if (lastCityKey.isNullOrEmpty()) {
             navController.navigate(R.id.action_navigation_home_to_navigation_city)
-
-                /*WeatherRequest(
-                    lastCity,
-                    Constant.API_KEY,
-                    "en",
-                    "false",
-                    stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
-                )*/
         } else {
             city = lastCityName
+            Log.d(TAG, "lastCityKey: $lastCityKey")
+            Log.d(TAG, "lastCityName: $lastCityName")
+            val mValues = sharedPreferences.getString("metricValues", "")
+            boolean = mValues.equals("metric")
             return WeatherRequest(
                 lastCityKey,
                 Constant.API_KEY,
                 "en",
                 "false",
-                stringBuilder.append(sharedPreferences.getString("metricValues", "")).toString()
+                boolean.toString()
             )
-
-            /*val shared = activity?.getPreferences(Context.MODE_PRIVATE) ?: return
-            with(shared.edit()) {
-                putString("lastCityKey", cityKey)
-                apply()
-            }*/
         }
         return null
     }
