@@ -1,17 +1,12 @@
 package com.impact.thebestweather.ui.weather
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
-import android.os.Handler
 import android.preference.PreferenceManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
@@ -20,18 +15,17 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
-import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.zip.Inflater
+
 private const val ARG_PARAM1 = "keyCity"
 private const val ARG_PARAM2 = "nameCity"
 
@@ -60,6 +54,7 @@ class WeatherFragment : Fragment() {
         navController = findNavController()
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
+        weatherViewModel.context = context
         getWeatherRequest()?.let { weatherViewModel.getWeather(it)
             Log.d(TAG, "weather: $it")
         }
@@ -117,7 +112,7 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
-    private fun getWeatherRequest(): WeatherRequest? {
+    private fun getWeatherRequest(): WeatherRequestData? {
         val stringBuilder = StringBuilder()
         var boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
@@ -133,7 +128,7 @@ class WeatherFragment : Fragment() {
             Log.d(TAG, "lastCityName: $lastCityName")
             val mValues = sharedPreferences.getString("metricValues", "")
             boolean = mValues.equals("metric")
-            return WeatherRequest(
+            return WeatherRequestData(
                 lastCityKey,
                 Constant.API_KEY,
                 "en",

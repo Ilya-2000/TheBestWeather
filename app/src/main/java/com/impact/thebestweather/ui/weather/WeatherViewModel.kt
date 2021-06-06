@@ -1,24 +1,23 @@
 package com.impact.thebestweather.ui.weather
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.impact.thebestweather.data.WeatherSource
-import com.impact.thebestweather.data.repository.WeatherRepository
-import com.impact.thebestweather.models.Resource
-import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.network.CityApiService
-import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class WeatherViewModel : ViewModel() {
+    var context: Context? = null
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
     lateinit var weatherSource: WeatherSource
@@ -41,11 +40,11 @@ class WeatherViewModel : ViewModel() {
         get() = _currentWeatherLiveData
 
 
-    fun getWeather(weatherRequest: WeatherRequest) {
+    fun getWeather(weatherRequestData: WeatherRequestData) {
         try {
             weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
-            weatherSource.getWeather(compositeDisposable, weatherRequest)
+            compositeDisposable.add(weatherSource.getWeather(compositeDisposable, weatherRequestData)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->
@@ -58,6 +57,7 @@ class WeatherViewModel : ViewModel() {
                         Log.d(TAG, "getWeather:e/ ${e.message}")
                         _loadingState.value = LoadingState.error(e.message)
                     })
+            )
         } catch (e: Exception) {
             _loadingState.value = LoadingState.error(e.message)
         }

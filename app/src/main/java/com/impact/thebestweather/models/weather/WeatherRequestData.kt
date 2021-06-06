@@ -1,6 +1,6 @@
 package com.impact.thebestweather.models.weather
 
-data class WeatherRequest(
+data class WeatherRequestData(
         val id: String,
         val apiKey: String,
         val language: String,

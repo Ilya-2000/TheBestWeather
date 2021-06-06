@@ -1,6 +1,5 @@
 package com.impact.thebestweather.ui.city
 
-import android.os.Bundle
 import android.util.Log
 import android.widget.SearchView
 import androidx.core.os.bundleOf
@@ -12,8 +11,7 @@ import com.impact.thebestweather.R
 import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
-import com.impact.thebestweather.models.location.LocationRequest
-import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
@@ -45,8 +43,8 @@ class CityViewModel : ViewModel() {
     private val _selectedCityLiveData = MutableLiveData<LocationItem>()
     val selectedCityLiveData: LiveData<LocationItem>
         get() = _selectedCityLiveData
-    private val _weatherRequestLiveData = MutableLiveData<WeatherRequest>()
-    val weatherRequestLiveData: LiveData<WeatherRequest>
+    private val _weatherRequestLiveData = MutableLiveData<WeatherRequestData>()
+    val weatherRequestDataLiveData: LiveData<WeatherRequestData>
         get() = _weatherRequestLiveData
 
     fun observeSearchView(searchView: SearchView) {

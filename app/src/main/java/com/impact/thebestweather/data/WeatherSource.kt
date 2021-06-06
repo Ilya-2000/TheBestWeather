@@ -3,16 +3,12 @@ package com.impact.thebestweather.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.impact.thebestweather.data.repository.WeatherRepository
-import com.impact.thebestweather.models.Resource
 import com.impact.thebestweather.models.weather.Weather
-import com.impact.thebestweather.models.weather.WeatherRequest
+import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.network.WeatherApiService
-import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.Single
 import io.reactivex.SingleObserver
@@ -20,7 +16,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Function3
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 
 class WeatherSource() {
@@ -45,9 +40,9 @@ class WeatherSource() {
     }
 
 
-    fun getDailyWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        compositeDisposable.add(weatherApiService.getDailyWeatherFromNetwork(weatherRequest.id, weatherRequest.apiKey,
-        weatherRequest.language, weatherRequest.details, weatherRequest.metric)
+    fun getDailyWeather(compositeDisposable: CompositeDisposable, weatherRequestData: WeatherRequestData) {
+        compositeDisposable.add(weatherApiService.getDailyWeatherFromNetwork(weatherRequestData.id, weatherRequestData.apiKey,
+        weatherRequestData.language, weatherRequestData.details, weatherRequestData.metric)
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                         { dailyData ->
@@ -77,9 +72,9 @@ class WeatherSource() {
 
     }
 
-    fun getHourlyWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        compositeDisposable.add(weatherApiService.getHourlyWeatherFromNetwork(weatherRequest.id,
-        weatherRequest.apiKey, weatherRequest.language, weatherRequest.details, weatherRequest.metric)
+    fun getHourlyWeather(compositeDisposable: CompositeDisposable, weatherRequestData: WeatherRequestData) {
+        compositeDisposable.add(weatherApiService.getHourlyWeatherFromNetwork(weatherRequestData.id,
+        weatherRequestData.apiKey, weatherRequestData.language, weatherRequestData.details, weatherRequestData.metric)
                 .subscribeOn(Schedulers.io())
                 .subscribe({ hourlyData ->
                     _hourlyWeatherLiveData.postValue(hourlyData)
@@ -117,9 +112,9 @@ class WeatherSource() {
 
 
 
-    fun getCurrentWeather(compositeDisposable: CompositeDisposable, weatherRequest: WeatherRequest) {
-        weatherApiService.getCurrentWeather(weatherRequest.id,
-                weatherRequest.apiKey, weatherRequest.language, weatherRequest.details)
+    fun getCurrentWeather(compositeDisposable: CompositeDisposable, weatherRequestData: WeatherRequestData) {
+        weatherApiService.getCurrentWeather(weatherRequestData.id,
+                weatherRequestData.apiKey, weatherRequestData.language, weatherRequestData.details)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(object : SingleObserver<CurrentWeather>{
@@ -143,23 +138,23 @@ class WeatherSource() {
     }
 
     fun getWeather(compositeDisposable: CompositeDisposable,
-                   weatherRequest: WeatherRequest): Single<Weather> {
+                   weatherRequestData: WeatherRequestData): Single<Weather> {
         return Single.zip(
-                weatherApiService.getHourlyWeatherFromNetwork(weatherRequest.id,
-                        weatherRequest.apiKey, weatherRequest.language, weatherRequest.details, weatherRequest.metric),
-                weatherApiService.getDailyWeatherFromNetwork(weatherRequest.id, weatherRequest.apiKey,
-                        weatherRequest.language, weatherRequest.details, weatherRequest.metric),
-                weatherApiService.getCurrentWeather(weatherRequest.id,
-                        weatherRequest.apiKey, weatherRequest.language, weatherRequest.details),
+                weatherApiService.getHourlyWeatherFromNetwork(weatherRequestData.id,
+                        weatherRequestData.apiKey, weatherRequestData.language, weatherRequestData.details, weatherRequestData.metric),
+                weatherApiService.getDailyWeatherFromNetwork(weatherRequestData.id, weatherRequestData.apiKey,
+                        weatherRequestData.language, weatherRequestData.details, weatherRequestData.metric),
+                weatherApiService.getCurrentWeather(weatherRequestData.id,
+                        weatherRequestData.apiKey, weatherRequestData.language, weatherRequestData.details),
                 Function3<HourlyData, DailyData, CurrentWeather, Weather>{
                     t1: HourlyData, t2: DailyData, t3: CurrentWeather ->
                     createWeatherModel(t1, t2, t3)
                 }
         )
-        /*getHourlyWeather(compositeDisposable, weatherRequest)
-        getDailyWeather(compositeDisposable, weatherRequest)
-        val request = weatherRequest.copy(id = weatherRequest.id, apiKey = weatherRequest.apiKey, language = weatherRequest.language,
-                details = weatherRequest.details, metric = "")
+        /*getHourlyWeather(compositeDisposable, weatherRequestData)
+        getDailyWeather(compositeDisposable, weatherRequestData)
+        val request = weatherRequestData.copy(id = weatherRequestData.id, apiKey = weatherRequestData.apiKey, language = weatherRequestData.language,
+                details = weatherRequestData.details, metric = "")
         getCurrentWeather(compositeDisposable, request)*/
     }
 
