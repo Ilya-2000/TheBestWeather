@@ -54,21 +54,23 @@ class CityFragment : Fragment() {
         recyclerView = binding.cityListRv
         navController = findNavController()
 
-
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
         cityViewModel.loadLiveData.observe(viewLifecycleOwner, Observer {
             when(it.status) {
                 LoadingState.Status.RUNNING -> {
                     Log.d(TAG, "Status: $it")
+                    binding.cityProgressBar.visibility = View.VISIBLE
+                    binding.messageCityText.visibility = View.VISIBLE
+                    binding.messageCityText.text = it.msg
                 }
                 LoadingState.Status.FAILED -> {
                     Log.d(TAG, "Status: $it")
+                    binding.cityProgressBar.visibility = View.GONE
+                    binding.messageCityText.visibility = View.VISIBLE
+                    binding.messageCityText.text = it.msg
                 }
                 LoadingState.Status.SUCCESS -> {
+                    binding.cityProgressBar.visibility = View.GONE
+                    binding.messageCityText.visibility = View.GONE
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
@@ -85,6 +87,14 @@ class CityFragment : Fragment() {
             }
 
         })
+
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
     }
 
 }
