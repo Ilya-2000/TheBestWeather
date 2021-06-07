@@ -54,12 +54,15 @@ class WeatherFragment : Fragment() {
         navController = findNavController()
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        weatherViewModel.context = context
-        getWeatherRequest()?.let { weatherViewModel.getWeather(it)
-            Log.d(TAG, "weather: $it")
+        weatherViewModel.getWeatherRequest(navController, city.toString())?.let {
+            weatherViewModel.getWeather(
+                it
+            )
         }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
-        binding.cityWeatherText.text = city
+        weatherViewModel.lastCityLiveData.observe(viewLifecycleOwner, Observer {
+            binding.cityWeatherText.text = it
+        })
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.dailyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
@@ -112,32 +115,6 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
-    private fun getWeatherRequest(): WeatherRequestData? {
-        val stringBuilder = StringBuilder()
-        var boolean: Boolean? = null
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val shp = activity?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
-        val lastCityKey = shp?.getString("lastCityKey", "")
-        val lastCityName = shp?.getString("lastCityName", "")
-        Log.d(TAG, "defaultCity: $boolean")
-        if (lastCityKey.isNullOrEmpty()) {
-            navController.navigate(R.id.action_navigation_home_to_navigation_city)
-        } else {
-            city = lastCityName
-            Log.d(TAG, "lastCityKey: $lastCityKey")
-            Log.d(TAG, "lastCityName: $lastCityName")
-            val mValues = sharedPreferences.getString("metricValues", "")
-            boolean = mValues.equals("metric")
-            return WeatherRequestData(
-                lastCityKey,
-                Constant.API_KEY,
-                "en",
-                "false",
-                boolean.toString()
-            )
-        }
-        return null
-    }
 
     companion object {
         @JvmStatic
