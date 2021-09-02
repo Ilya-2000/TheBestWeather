@@ -63,6 +63,7 @@ class WeatherFragment : Fragment() {
         weatherViewModel.lastCityLiveData.observe(viewLifecycleOwner, Observer {
             binding.cityWeatherText.text = it
         })
+
         binding.bgWeatherLayout.visibility = View.VISIBLE
         binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.dailyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
