@@ -36,10 +36,7 @@ class CityFragment : Fragment() {
     private val TAG = "CityFragment"
     private lateinit var navController: NavController
     private lateinit var cityViewModel: CityViewModel
-    private lateinit var disposable: Disposable
     var text: String = ""
-    private val compositeDisposable = CompositeDisposable()
-    lateinit var citySource: CitySource
     private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
