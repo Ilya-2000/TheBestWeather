@@ -54,10 +54,8 @@ class WeatherFragment : Fragment() {
         navController = findNavController()
         weatherViewModel =
                 ViewModelProvider(this).get(WeatherViewModel::class.java)
-        weatherViewModel.getWeatherRequest(navController, city.toString())?.let {
-            weatherViewModel.getWeather(
-                it
-            )
+        weatherViewModel.getWeatherRequest(navController)?.let {
+            weatherViewModel.getWeather(it)
         }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
         weatherViewModel.lastCityLiveData.observe(viewLifecycleOwner, Observer {

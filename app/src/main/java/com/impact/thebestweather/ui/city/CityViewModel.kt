@@ -8,7 +8,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
-import com.impact.thebestweather.data.CitySource
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.models.weather.WeatherRequestData
@@ -27,7 +26,6 @@ class CityViewModel : ViewModel() {
     private val TAG = "CityViewModel"
     private val compositeDisposable = CompositeDisposable()
     private lateinit var disposable: Disposable
-    lateinit var citySource: CitySource
     private val cityApiService by lazy {
         CityApiService.create()
     }
@@ -43,12 +41,11 @@ class CityViewModel : ViewModel() {
     private val _selectedCityLiveData = MutableLiveData<LocationItem>()
     val selectedCityLiveData: LiveData<LocationItem>
         get() = _selectedCityLiveData
-    private val _weatherRequestLiveData = MutableLiveData<WeatherRequestData>()
+    /*private val _weatherRequestLiveData = MutableLiveData<WeatherRequestData>()
     val weatherRequestDataLiveData: LiveData<WeatherRequestData>
-        get() = _weatherRequestLiveData
+        get() = _weatherRequestLiveData*/
 
     fun observeSearchView(searchView: SearchView) {
-        citySource = CitySource()
         _loadLiveData.value = LoadingState.LOADING
         disposable = RxSearchView.observeSearchView(searchView)
             .debounce(1000, TimeUnit.MILLISECONDS)

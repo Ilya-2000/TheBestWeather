@@ -28,11 +28,6 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
     lateinit var weatherSource: WeatherSource
     private val application: Application? = getApplication()
 
-
-    val cityApiService by lazy {
-        CityApiService.create()
-    }
-
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
     val dailyWeatherLiveData: LiveData<DailyData>
         get() = _dailyWeatherLiveData
@@ -54,7 +49,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
         try {
             weatherSource = WeatherSource()
             _loadingState.value = LoadingState.LOADING
-            compositeDisposable.add(weatherSource.getWeather(compositeDisposable, weatherRequestData)
+            compositeDisposable.add(weatherSource.getWeather(weatherRequestData)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->
@@ -75,8 +70,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
 
 
-     fun getWeatherRequest(navController: NavController, city: String): WeatherRequestData? {
-        val stringBuilder = StringBuilder()
+     fun getWeatherRequest(navController: NavController): WeatherRequestData? {
         var boolean: Boolean? = null
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
         val shp = application?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
