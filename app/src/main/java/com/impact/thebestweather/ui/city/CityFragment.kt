@@ -42,18 +42,18 @@ class CityFragment : Fragment() {
             when(it.status) {
                 LoadingState.Status.RUNNING -> {
                     Log.d(TAG, "Status: $it")
-                    binding.cityProgressBar.visibility = View.VISIBLE
+                    //binding.cityProgressBar.visibility = View.VISIBLE
                     binding.messageCityText.visibility = View.VISIBLE
                     binding.messageCityText.text = it.msg
                 }
                 LoadingState.Status.FAILED -> {
                     Log.d(TAG, "Status: $it")
-                    binding.cityProgressBar.visibility = View.GONE
+                    //binding.cityProgressBar.visibility = View.GONE
                     binding.messageCityText.visibility = View.VISIBLE
                     binding.messageCityText.text = it.msg
                 }
                 LoadingState.Status.SUCCESS -> {
-                    binding.cityProgressBar.visibility = View.GONE
+                    //binding.cityProgressBar.visibility = View.GONE
                     binding.messageCityText.visibility = View.GONE
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {

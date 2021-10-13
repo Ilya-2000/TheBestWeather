@@ -35,11 +35,12 @@
             android:text="@{Double.toString(hourly.temperature.value)}"
             android:layout_gravity="center_horizontal" />
 
-        <ImageView
+        <TextView
             android:id="@+id/icon_hourly_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_baseline_location_on_24"
+            android:text="@{hourly.iconPhrase}"
+            android:textColor="@color/white"
             android:layout_margin="8dp"
             android:layout_gravity="center_horizontal" />
     </LinearLayout>

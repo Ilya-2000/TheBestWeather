@@ -1,5 +1,6 @@
 package com.impact.thebestweather.adapter
 
+import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -43,4 +44,5 @@ class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adap
     private fun cutDate(localDate: String): String {
         return localDate.substring(0,10)
     }
+
 }
