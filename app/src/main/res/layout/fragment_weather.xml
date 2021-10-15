@@ -83,10 +83,9 @@
                     android:layout_marginTop="8dp"
                     android:text="@{Double.toString(currentWeather.temperature.metric.value)}"
                     android:textColor="@color/white"
-                    android:textSize="80sp"
+                    android:textSize="72sp"
                     app:layout_constraintBottom_toTopOf="@+id/current_weather_condition_text"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/weather_now_text" />
 
