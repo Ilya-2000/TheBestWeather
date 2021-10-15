@@ -28,7 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="32dp"
                 android:layout_marginEnd="8dp"
                 android:drawableLeft="@drawable/ic_baseline_location_on_24"
                 android:text="@string/app_name"
@@ -42,7 +42,7 @@
                 android:id="@+id/date_weather_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:text="00/00/0000"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -50,35 +50,37 @@
                 app:layout_constraintTop_toBottomOf="@+id/city_weather_text" />
 
 
-            <ImageView
-                android:id="@+id/current_weather_icon"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="48dp"
-                android:layout_marginTop="24dp"
-                android:src="@drawable/cloudy"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/date_weather_text"
-                app:layout_constraintVertical_bias="0.050000012" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="24dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.75"
-                app:layout_constraintStart_toEndOf="@+id/current_weather_icon"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/date_weather_text"
-                app:layout_constraintVertical_bias="0.050000012">
+                app:layout_constraintVertical_bias="0.0">
+
+                <TextView
+                    android:id="@+id/weather_now_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/weather_now"
+                    android:textColor="@color/white"
+                    android:textSize="32sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/current_temp_weather"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
                     android:text="@{Double.toString(currentWeather.temperature.metric.value)}"
                     android:textColor="@color/white"
                     android:textSize="80sp"
@@ -86,8 +88,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="1.0" />
+                    app:layout_constraintTop_toBottomOf="@+id/weather_now_text" />
 
                 <TextView
                     android:id="@+id/current_weather_condition_text"
@@ -105,10 +106,10 @@
                 android:id="@+id/hourly_weather_rv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/current_weather_icon" />
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout" />
 
             <TextView
                 android:id="@+id/daily_title_text"
