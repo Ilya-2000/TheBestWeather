@@ -4,14 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Ilya/AndroidStudioProjects/TheBestWeather/app/src/main/res/layout/daily_weather_item.xml" value="0.5179233621755254" />
-        <entry key="..\:/Users/Ilya/AndroidStudioProjects/TheBestWeather/app/src/main/res/layout/fragment_city.xml" value="0.19157608695652173" />
+        <entry key="..\:/Users/Ilya/AndroidStudioProjects/TheBestWeather/app/src/main/res/layout/fragment_city.xml" value="0.33" />
         <entry key="..\:/Users/Ilya/AndroidStudioProjects/TheBestWeather/app/src/main/res/layout/hourly_weather_item.xml" value="0.16145833333333334" />
-        <entry key="..\:/Users/admin/StudioProjects/TheBestWeather/app/src/main/res/layout/daily_weather_item.xml" value="0.9" />
-        <entry key="..\:/Users/admin/StudioProjects/TheBestWeather/app/src/main/res/layout/fragment_weather.xml" value="0.607192254495159" />
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">
