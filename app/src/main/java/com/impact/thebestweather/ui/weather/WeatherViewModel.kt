@@ -7,15 +7,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
-import com.impact.thebestweather.data.WeatherSource
+import com.impact.thebestweather.data.remote.WeatherSource
 import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
-import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers

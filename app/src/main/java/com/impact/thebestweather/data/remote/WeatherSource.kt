@@ -1,4 +1,4 @@
-package com.impact.thebestweather.data
+package com.impact.thebestweather.data.remote
 
 import android.util.Log
 import androidx.lifecycle.LiveData
