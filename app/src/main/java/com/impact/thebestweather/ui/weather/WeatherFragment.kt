@@ -1,6 +1,5 @@
 package com.impact.thebestweather.ui.weather
 
-import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -20,8 +19,6 @@ import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
-import com.impact.thebestweather.models.weather.WeatherRequestData
-import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import java.text.SimpleDateFormat
 import java.util.*
@@ -95,8 +92,14 @@ class WeatherFragment : Fragment() {
                     Log.d(TAG, "weather: ${weatherViewModel.dailyWeatherLiveData.value}")
 
                     weatherViewModel.currentWeatherLiveData.observe(viewLifecycleOwner, Observer {
-
-                        binding.currentWeather = weatherViewModel.currentWeatherLiveData.value?.get(0)
+                        binding.currentWeatherDesc = weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherText
+                        if (checkTypeValues()) {
+                            binding.currentWeatherTemp = weatherViewModel.currentWeatherLiveData
+                                .value?.get(0)?.Temperature?.Metric?.Value.toString()
+                        } else {
+                            binding.currentWeatherTemp = weatherViewModel.currentWeatherLiveData
+                                .value?.get(0)?.Temperature?.Imperial?.Value.toString()
+                        }
                     })
 
                     val sdf = SimpleDateFormat("dd/M/yyyy")
@@ -106,11 +109,13 @@ class WeatherFragment : Fragment() {
             }
 
         })
-
-
-
-
         return binding.root
+    }
+
+    private fun checkTypeValues(): Boolean {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        val mValues = sharedPreferences.getString("metricValues", "")
+        return mValues.equals("metric")
     }
 
 

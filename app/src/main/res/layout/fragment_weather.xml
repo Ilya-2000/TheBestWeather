@@ -5,8 +5,11 @@
 
     <data class="WeatherFragmentBinding">
         <variable
-            name="currentWeather"
-            type="com.impact.thebestweather.models.weather.current.CurrentWeatherItem" />
+            name="currentWeatherTemp"
+            type="String" />
+        <variable
+            name="currentWeatherDesc"
+            type="String" />
     </data>
 
     <FrameLayout
@@ -81,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="@{Double.toString(currentWeather.temperature.metric.value)}"
+                    android:text="@{currentWeatherTemp}"
                     android:textColor="@color/white"
                     android:textSize="72sp"
                     app:layout_constraintBottom_toTopOf="@+id/current_weather_condition_text"
@@ -93,7 +96,7 @@
                     android:id="@+id/current_weather_condition_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{currentWeather.weatherText}"
+                    android:text="@{currentWeatherDesc}"
                     android:textColor="@color/white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

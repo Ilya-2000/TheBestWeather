@@ -57,6 +57,7 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
                         _dailyWeatherLiveData.postValue(weather.dailyData)
                         _currentWeatherLiveData.postValue(weather.currentWeather)
                         Log.d(TAG, "getWeather:success/ ${weather.dailyData}")
+                        Log.d(TAG, "getWeather:current/ ${weather.currentWeather}")
                         _loadingState.value = LoadingState.LOADED
                     }, { e ->
                         Log.d(TAG, "getWeather:e/ ${e.message}")

@@ -33,7 +33,7 @@ interface WeatherApiService {
     ): Single<HourlyData>
     @GET("/currentconditions/v1/{id}")
     fun getCurrentWeather(
-            @Path("id" )id: String,
+            @Path("id")id: String,
             @Query("apikey")apiKey: String,
             @Query("language")language: String,
             @Query("details")details: String
