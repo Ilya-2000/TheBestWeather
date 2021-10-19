@@ -9,7 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
-import com.impact.thebestweather.data.remote.WeatherSource
+import com.impact.thebestweather.data.weather.remote.WeatherSource
 import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
