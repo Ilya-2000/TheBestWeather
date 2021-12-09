@@ -7,15 +7,13 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
-import com.impact.thebestweather.data.WeatherSource
+import com.impact.thebestweather.weather.WeatherRemoteSourceImpl
 import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
-import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -25,7 +23,7 @@ import io.reactivex.schedulers.Schedulers
 class WeatherViewModel(application: Application) : AndroidViewModel(application) {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    lateinit var weatherSource: WeatherSource
+    lateinit var weatherRemoteSourceImpl: WeatherRemoteSourceImpl
     private val application: Application? = getApplication()
 
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
@@ -47,9 +45,9 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
     fun getWeather(weatherRequestData: WeatherRequestData) {
         try {
-            weatherSource = WeatherSource()
+            weatherRemoteSourceImpl = WeatherRemoteSourceImpl()
             _loadingState.value = LoadingState.LOADING
-            compositeDisposable.add(weatherSource.getWeather(weatherRequestData)
+            compositeDisposable.add(weatherRemoteSourceImpl.getWeather(weatherRequestData)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->

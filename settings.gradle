@@ -1,4 +1,4 @@
 include ':app'
 rootProject.name = "TheBestWeather"
-include ':domain'
 include ':data'
+include ':domain'
