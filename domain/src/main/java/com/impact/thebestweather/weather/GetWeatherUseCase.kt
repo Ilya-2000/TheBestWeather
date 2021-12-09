@@ -1,4 +1,4 @@
-package com.impact.thebestweather.usecases
+package com.impact.thebestweather.weather
 
 import com.impact.thebestweather.WeatherRepository
 import com.impact.thebestweather.models.weather.Weather
