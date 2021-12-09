@@ -1,7 +1,6 @@
 package com.impact.thebestweather.adapter
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,9 +8,8 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.СityCardBinding
-import com.impact.thebestweather.models.location.LocationItem
+import com.impact.thebestweather.models.location.LocationItemData
 import com.impact.thebestweather.ui.city.CityViewModel
-import java.util.zip.Inflater
 
 class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavController, val context: Context): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
 
@@ -48,7 +46,7 @@ class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavCont
 
 
     inner class ViewHolder(private val cityCardBinding: СityCardBinding) : RecyclerView.ViewHolder(cityCardBinding.root) {
-        fun bind(item: LocationItem) = with(cityCardBinding){
+        fun bind(item: LocationItemData) = with(cityCardBinding){
             cityCardBinding.cityItem = item
             cityCardBinding.executePendingBindings()
         }

@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
 import com.impact.thebestweather.models.location.Location
-import com.impact.thebestweather.models.location.LocationItem
+import com.impact.thebestweather.models.location.LocationItemData
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
@@ -37,8 +37,8 @@ class CityViewModel : ViewModel() {
     val loadLiveData: LiveData<LoadingState>
         get() = _loadLiveData
 
-    private val _selectedCityLiveData = MutableLiveData<LocationItem>()
-    val selectedCityLiveData: LiveData<LocationItem>
+    private val _selectedCityLiveData = MutableLiveData<LocationItemData>()
+    val selectedCityLiveData: LiveData<LocationItemData>
         get() = _selectedCityLiveData
     /*private val _weatherRequestLiveData = MutableLiveData<WeatherRequestData>()
     val weatherRequestDataLiveData: LiveData<WeatherRequestData>
