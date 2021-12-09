@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
 import com.impact.thebestweather.weather.WeatherRemoteSourceImpl
@@ -14,16 +15,18 @@ import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
+import com.impact.thebestweather.usecases.GetWeatherUseCase
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
-class WeatherViewModel(application: Application) : AndroidViewModel(application) {
+class WeatherViewModel(
+    private val getWeatherUseCase: GetWeatherUseCase,
+    application: Application) : AndroidViewModel(application) {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    lateinit var weatherRemoteSourceImpl: WeatherRemoteSourceImpl
     private val application: Application? = getApplication()
 
     private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
@@ -45,9 +48,9 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
     fun getWeather(weatherRequestData: WeatherRequestData) {
         try {
-            weatherRemoteSourceImpl = WeatherRemoteSourceImpl()
+
             _loadingState.value = LoadingState.LOADING
-            compositeDisposable.add(weatherRemoteSourceImpl.getWeather(weatherRequestData)
+            compositeDisposable.add(getWeatherUseCase.execute(weatherRequestData)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->
