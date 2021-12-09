@@ -10,7 +10,6 @@ import androidx.navigation.NavController
 import com.impact.thebestweather.R
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
-import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.network.CityApiService
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
