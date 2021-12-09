@@ -8,4 +8,6 @@ interface CityRepository {
     fun getCities(cityRequest: CityRequest): Location
 
     fun selectCity(locationItem: LocationItem)
+
+    fun getSelectedCity(): LocationItem
 }
