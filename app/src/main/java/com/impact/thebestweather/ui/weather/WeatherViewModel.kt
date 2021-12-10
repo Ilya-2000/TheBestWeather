@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
+import com.impact.thebestweather.models.weather.Weather
 import com.impact.thebestweather.weather.WeatherRemoteSourceImpl
 import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
@@ -29,12 +30,10 @@ class WeatherViewModel(
     private val compositeDisposable = CompositeDisposable()
     private val application: Application? = getApplication()
 
-    private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
-    val dailyWeatherLiveData: LiveData<DailyData>
-        get() = _dailyWeatherLiveData
-    private val _hourlyWeatherLiveData = MutableLiveData<HourlyData>()
-    val hourlyWeatherLiveData: LiveData<HourlyData>
-        get() = _hourlyWeatherLiveData
+    private val _weatherLiveData = MutableLiveData<Weather>()
+    val weatherLiveData: LiveData<Weather>
+        get() = _weatherLiveData
+
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
@@ -54,8 +53,7 @@ class WeatherViewModel(
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->
-                        _hourlyWeatherLiveData.postValue(weather.hourlyData)
-                        _dailyWeatherLiveData.postValue(weather.dailyData)
+                        _weatherLiveData.postValue(weather)
                         _currentWeatherLiveData.postValue(weather.currentWeather)
                         Log.d(TAG, "GetWeatherUseCase:success/ ${weather.dailyData}")
                         Log.d(TAG, "GetWeatherUseCase:current/ ${weather.currentWeather}")

@@ -89,7 +89,7 @@ class WeatherFragment : Fragment() {
                     adapter.notifyDataSetChanged()
                     dailyAdapter.notifyDataSetChanged()
                     Log.d(TAG, "it: $it")
-                    Log.d(TAG, "weather: ${weatherViewModel.dailyWeatherLiveData.value}")
+                    Log.d(TAG, "weather: ${weatherViewModel.weatherLiveData.value}")
 
                     weatherViewModel.currentWeatherLiveData.observe(viewLifecycleOwner, Observer {
                         binding.currentWeatherDesc = weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherText
