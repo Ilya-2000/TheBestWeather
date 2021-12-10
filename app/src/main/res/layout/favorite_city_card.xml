@@ -4,7 +4,7 @@
     <data class="СityCardBinding">
         <variable
             name="cityItem"
-            type="com.impact.thebestweather.models.location.LocationItemData" />
+            type="com.impact.thebestweather.models.location.LocationItem" />
     </data>
 
     <androidx.cardview.widget.CardView

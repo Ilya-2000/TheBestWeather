@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.DailyItemBinding
 import com.impact.thebestweather.databinding.HourlyWeatherItemBinding
+import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.daily.DailyForecast
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
-class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
+class DailyRvAdapter(private var dailyDataList: DailyData): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: DailyItemBinding = DataBindingUtil
@@ -23,10 +24,9 @@ class DailyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = viewModel.dailyWeatherLiveData.value?.DailyForecasts?.get(position)
-        if (item != null) {
-            holder.bind(item)
-        }
+        val item = dailyDataList.DailyForecasts[position]
+        holder.bind(item)
+
     }
 
     override fun getItemCount(): Int = 5

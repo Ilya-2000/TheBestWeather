@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
@@ -23,16 +24,16 @@ import io.reactivex.disposables.Disposable
 class CityFragment : Fragment() {
     private val TAG = "CityFragment"
     private lateinit var navController: NavController
-    private lateinit var cityViewModel: CityViewModel
     private lateinit var recyclerView: RecyclerView
+
+    private val cityViewModel: CityViewModel by viewModels()
 
     override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
     ): View? {
-        cityViewModel =
-                ViewModelProvider(this).get(CityViewModel::class.java)
+
         val binding: CityFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_city, container, false)
         cityViewModel.observeSearchView(binding.citySearchView)
         recyclerView = binding.cityListRv
@@ -58,11 +59,7 @@ class CityFragment : Fragment() {
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
-                        val adapter = context?.let { it1 ->
-                            CityListRvAdapter(cityViewModel, navController,
-                                it1
-                            )
-                        }
+                        val adapter = CityListRvAdapter(it, requireContext())
                         recyclerView.layoutManager = GridLayoutManager(context, 2)
                         recyclerView.adapter = adapter
                         adapter?.notifyDataSetChanged()

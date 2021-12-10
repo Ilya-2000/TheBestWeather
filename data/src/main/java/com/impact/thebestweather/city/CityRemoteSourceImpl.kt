@@ -3,7 +3,6 @@ package com.impact.thebestweather.city
 import com.impact.thebestweather.models.location.CityRequest
 import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.network.CityApiService
-import com.impact.thebestweather.network.WeatherApiService
 import io.reactivex.Single
 
 class CityRemoteSourceImpl() : CityRemoteSource {

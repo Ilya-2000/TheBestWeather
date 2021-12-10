@@ -7,11 +7,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.HourlyWeatherItemBinding
+import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.models.weather.hourly.HourlyDataItem
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
-class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
+class HourlyRvAdapter(private var hourlyWeatherList: HourlyData): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,10 +25,8 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = viewModel.hourlyWeatherLiveData.value?.get(position)
-        if (item != null) {
+        val item = hourlyWeatherList[position]
             holder.bind(item)
-        }
     }
 
     override fun getItemCount(): Int = 12

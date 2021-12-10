@@ -5,5 +5,5 @@ import com.impact.thebestweather.models.location.Location
 import io.reactivex.Single
 
 interface CityRemoteSource {
-    fun getCitiesFromNetwork(cityRequest: CityRequest) : Single<Location>
+    fun getCitiesFromNetwork(cityRequestData: CityRequest) : Single<Location>
 }

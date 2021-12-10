@@ -8,26 +8,35 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
+import com.impact.thebestweather.models.LocationSharedData
+import com.impact.thebestweather.models.location.CityRequest
 import com.impact.thebestweather.models.location.Location
-import com.impact.thebestweather.models.location.LocationItemData
+import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.network.CityApiService
+import com.impact.thebestweather.usecases.GetCitiesUseCase
+import com.impact.thebestweather.usecases.GetSelectedCityUseCase
+import com.impact.thebestweather.usecases.SetSelectCityUseCase
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
 import com.impact.thebestweather.utils.RxSearchView
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class CityViewModel : ViewModel() {
+@HiltViewModel
+class CityViewModel @Inject constructor(
+    private val setSelectCityUseCase: SetSelectCityUseCase,
+    private val getCitiesUseCase: GetCitiesUseCase,
+    private val getSelectedCityUseCase: GetSelectedCityUseCase
+) : ViewModel() {
     private val TAG = "CityViewModel"
     private val compositeDisposable = CompositeDisposable()
     private lateinit var disposable: Disposable
-    private val cityApiService by lazy {
-        CityApiService.create()
-    }
 
     private val _cityListLiveData = MutableLiveData<Location>()
     val cityListLiveData: LiveData<Location>
@@ -37,12 +46,10 @@ class CityViewModel : ViewModel() {
     val loadLiveData: LiveData<LoadingState>
         get() = _loadLiveData
 
-    private val _selectedCityLiveData = MutableLiveData<LocationItemData>()
-    val selectedCityLiveData: LiveData<LocationItemData>
+    private val _selectedCityLiveData = MutableLiveData<LocationSharedData>()
+    val selectedCityLiveData: LiveData<LocationSharedData>
         get() = _selectedCityLiveData
-    /*private val _weatherRequestLiveData = MutableLiveData<WeatherRequestData>()
-    val weatherRequestDataLiveData: LiveData<WeatherRequestData>
-        get() = _weatherRequestLiveData*/
+
 
     fun observeSearchView(searchView: SearchView) {
         _loadLiveData.value = LoadingState.LOADING
@@ -71,9 +78,13 @@ class CityViewModel : ViewModel() {
 
     private fun searchCities(query: String) {
         try {
-            compositeDisposable.add(cityApiService.searchCity(
-                Constant.API_KEY,
-                query, "en", "false"
+            compositeDisposable.add(getCitiesUseCase.execute(
+                CityRequest(
+                    Constant.API_KEY,
+                    query,
+                    language = "en",
+                    "false"
+                )
             )
                 .subscribeOn(Schedulers.io())
                 .subscribe(
@@ -90,13 +101,11 @@ class CityViewModel : ViewModel() {
         }
     }
 
-    fun setSelectedCity(position: Int, navController: NavController) {
-        val bundle = bundleOf(
-            "keyCity" to cityListLiveData.value?.get(position)?.Key,
-            "nameCity" to cityListLiveData.value?.get(position)?.EnglishName)
-        Log.d(TAG, selectedCityLiveData.value.toString())
-        navController.navigate(R.id.action_navigation_city_to_navigation_home, bundle)
+    fun setSelectedCity(locationItem: LocationItem) {
+        setSelectCityUseCase.execute(locationItem)
     }
+
+
 
 
 }
