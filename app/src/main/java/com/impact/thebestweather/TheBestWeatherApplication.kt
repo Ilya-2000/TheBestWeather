@@ -1,9 +1,7 @@
 package com.impact.thebestweather
 
 import android.app.Application
-import com.impact.thebestweather.usecases.GetWeatherUseCase
-import com.impact.thebestweather.weather.WeatherRepositoryImpl
+import dagger.hilt.android.HiltAndroidApp
 
-class TheBestWeatherApplication :  Application() {
-
-}
+@HiltAndroidApp
+class TheBestWeatherApplication :  Application()
