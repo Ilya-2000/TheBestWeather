@@ -16,6 +16,7 @@ import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
+import com.impact.thebestweather.usecases.GetSelectedCityUseCase
 import com.impact.thebestweather.usecases.GetWeatherUseCase
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
@@ -25,6 +26,7 @@ import io.reactivex.schedulers.Schedulers
 
 class WeatherViewModel(
     private val getWeatherUseCase: GetWeatherUseCase,
+    private val getSelectedCityUseCase: GetSelectedCityUseCase,
     application: Application) : AndroidViewModel(application) {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
