@@ -88,12 +88,12 @@ class WeatherFragment : Fragment() {
                 LoadingState.Status.SUCCESS -> {
                     binding.bgWeatherLayout.visibility = View.GONE
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-                    val adapter = HourlyRvAdapter(weatherViewModel)
-                    val dailyAdapter = DailyRvAdapter(weatherViewModel)
-                    binding.hourlyWeatherRv.adapter = adapter
-                    binding.dailyWeatherRv.adapter = dailyAdapter
-                    adapter.notifyDataSetChanged()
-                    dailyAdapter.notifyDataSetChanged()
+                    //val adapter = HourlyRvAdapter(weatherViewModel)
+                    //val dailyAdapter = DailyRvAdapter(weatherViewModel)
+                    //binding.hourlyWeatherRv.adapter = adapter
+                    //binding.dailyWeatherRv.adapter = dailyAdapter
+                    //adapter.notifyDataSetChanged()
+                    //dailyAdapter.notifyDataSetChanged()
                     Log.d(TAG, "it: $it")
                     Log.d(TAG, "weather: ${weatherViewModel.weatherLiveData.value}")
 
