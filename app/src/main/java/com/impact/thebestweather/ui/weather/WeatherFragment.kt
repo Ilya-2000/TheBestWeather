@@ -26,8 +26,7 @@ import java.util.*
 
 
 class WeatherFragment : Fragment() {
-    private var cityKey: String? = null
-    private var city: String? = null
+
     private val TAG = "WeatherFragment"
     private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var navController: NavController
@@ -35,7 +34,7 @@ class WeatherFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.d(TAG, "onCreate: cityKey = $cityKey city = $city")
+
     }
 
 
