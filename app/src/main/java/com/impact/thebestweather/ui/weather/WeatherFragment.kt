@@ -23,8 +23,7 @@ import com.impact.thebestweather.utils.LoadingState
 import java.text.SimpleDateFormat
 import java.util.*
 
-private const val ARG_PARAM1 = "keyCity"
-private const val ARG_PARAM2 = "nameCity"
+
 
 class WeatherFragment : Fragment() {
     private var cityKey: String? = null
@@ -35,10 +34,7 @@ class WeatherFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            cityKey = it.getString(ARG_PARAM1)
-            city = it.getString(ARG_PARAM2)
-        }
+
         Log.d(TAG, "onCreate: cityKey = $cityKey city = $city")
     }
 
@@ -119,14 +115,5 @@ class WeatherFragment : Fragment() {
     }
 
 
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            WeatherFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
+
 }
