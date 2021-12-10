@@ -73,27 +73,26 @@ class WeatherViewModel(
 
 
      fun getWeatherRequest(navController: NavController): WeatherRequestData? {
-        var boolean: Boolean? = null
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-        val shp = application?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
-        val lastCityKey = shp?.getString("lastCityKey", "")
-        val lastCityName = shp?.getString("lastCityName", "")
-        Log.d(TAG, "defaultCity: $boolean")
-        if (lastCityKey.isNullOrEmpty()) {
+        //var boolean: Boolean? = null
+        val locationShared = getSelectedCityUseCase.execute()
+        //Log.d(TAG, "defaultCity: $boolean")
+        if (locationShared?.key.isNullOrEmpty()) {
             navController.navigate(R.id.action_navigation_home_to_navigation_city)
         } else {
-            _lastCityLiveData.value = lastCityName.toString()
-            Log.d(TAG, "lastCityKey: $lastCityKey")
-            Log.d(TAG, "lastCityName: $lastCityName")
-            val mValues = sharedPreferences.getString("metricValues", "")
-            boolean = mValues.equals("metric")
-            return WeatherRequestData(
-                lastCityKey,
-                Constant.API_KEY,
-                "en",
-                "false",
-                boolean.toString()
-            )
+            _lastCityLiveData.value = locationShared?.name
+            Log.d(TAG, "lastCityKey: ${locationShared?.key}")
+            Log.d(TAG, "lastCityName: ${locationShared?.name}")
+            //val mValues = sharedPreferences.getString("metricValues", "")
+            //boolean = mValues.equals("metric")
+            return locationShared?.let {
+                WeatherRequestData(
+                    it.key,
+                    Constant.API_KEY,
+                    "en",
+                    "false",
+                    "metric"
+                )
+            }
         }
         return null
     }
