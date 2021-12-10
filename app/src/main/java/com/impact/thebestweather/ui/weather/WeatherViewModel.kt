@@ -20,11 +20,14 @@ import com.impact.thebestweather.usecases.GetSelectedCityUseCase
 import com.impact.thebestweather.usecases.GetWeatherUseCase
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class WeatherViewModel(
+@HiltViewModel
+class WeatherViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
     private val getSelectedCityUseCase: GetSelectedCityUseCase,
     application: Application) : AndroidViewModel(application) {

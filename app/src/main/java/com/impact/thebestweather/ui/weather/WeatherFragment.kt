@@ -21,15 +21,16 @@ import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
+import dagger.hilt.EntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-
+@EntryPoint
 class WeatherFragment : Fragment() {
 
     private val TAG = "WeatherFragment"
-    private lateinit var weatherViewModel: WeatherViewModel
+    //private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var navController: NavController
 
     /*private val weatherViewModel: WeatherViewModel by viewModels {
@@ -39,6 +40,7 @@ class WeatherFragment : Fragment() {
 
         )
     }*/
+    private val weatherViewModel : WeatherViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,8 +55,8 @@ class WeatherFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         navController = findNavController()
-        weatherViewModel =
-                ViewModelProvider(this).get(WeatherViewModel::class.java)
+        /*weatherViewModel =
+                ViewModelProvider(this).get(WeatherViewModel::class.java)*/
         weatherViewModel.getWeatherRequest(navController)?.let {
             weatherViewModel.getWeather(it)
         }
