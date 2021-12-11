@@ -18,9 +18,12 @@ import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.CityListRvAdapter
 import com.impact.thebestweather.databinding.CityFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
+import dagger.hilt.EntryPoint
+import dagger.hilt.InstallIn
+import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
-
+@AndroidEntryPoint
 class CityFragment : Fragment() {
     private val TAG = "CityFragment"
     private lateinit var navController: NavController
@@ -77,5 +80,7 @@ class CityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
     }
+
+
 
 }

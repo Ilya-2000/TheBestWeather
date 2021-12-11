@@ -22,11 +22,12 @@ import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
 import com.impact.thebestweather.utils.LoadingState
 import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
 import java.util.*
 
 
-@EntryPoint
+@AndroidEntryPoint
 class WeatherFragment : Fragment() {
 
     private val TAG = "WeatherFragment"

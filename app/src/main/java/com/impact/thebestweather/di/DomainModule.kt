@@ -10,6 +10,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import javax.inject.Inject
 
 @Module
 @InstallIn(ViewModelComponent::class)
@@ -23,7 +24,7 @@ class DomainModule {
     = GetCitiesUseCase(cityRepository = cityRepository)
 
     @Provides
-    fun provideGetSelectedCityUseCase(cityRepository: CityRepository)
+    fun provideGetSelectedCityUseCase( cityRepository: CityRepository)
     = GetSelectedCityUseCase(cityRepository = cityRepository)
 
     @Provides

@@ -1,11 +1,16 @@
 package com.impact.thebestweather.di
 
 import android.content.Context
+import com.impact.thebestweather.CityRepository
+import com.impact.thebestweather.WeatherRepository
 import com.impact.thebestweather.city.CityRemoteSource
+import com.impact.thebestweather.city.CityRemoteSourceImpl
 import com.impact.thebestweather.city.CityRepositoryImpl
 import com.impact.thebestweather.city.LocationLocalStorageImpl
 import com.impact.thebestweather.weather.WeatherRemoteSource
+import com.impact.thebestweather.weather.WeatherRemoteSourceImpl
 import com.impact.thebestweather.weather.WeatherRepositoryImpl
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,7 +24,7 @@ class DataModule {
 
     @Provides
     @Singleton
-    fun provideWeatherRepository(weatherRemoteSource: WeatherRemoteSource)
+    fun provideWeatherRepository(weatherRemoteSource: WeatherRemoteSource) : WeatherRepository
     = WeatherRepositoryImpl(weatherRemoteSource = weatherRemoteSource)
 
     @Provides
@@ -31,9 +36,19 @@ class DataModule {
     @Singleton
     fun provideCityRepository(
         cityRemoteSource: CityRemoteSource,
-        locationLocalStorageImpl: LocationLocalStorageImpl) = CityRepositoryImpl(
+        locationLocalStorageImpl: LocationLocalStorageImpl): CityRepository = CityRepositoryImpl(
         cityRemoteSource = cityRemoteSource,
         locationLocalStorage = locationLocalStorageImpl)
+
+    @Provides
+    @Singleton
+    fun provideCityRemoteSource(): CityRemoteSource = CityRemoteSourceImpl()
+
+    @Provides
+    @Singleton
+    fun provideWeatherRemoteSource(): WeatherRemoteSource = WeatherRemoteSourceImpl()
+
+
 
 
 }

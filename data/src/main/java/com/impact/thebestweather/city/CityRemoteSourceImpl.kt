@@ -10,11 +10,11 @@ class CityRemoteSourceImpl() : CityRemoteSource {
         CityApiService.create()
     }
 
-    override fun getCitiesFromNetwork(cityRequest: CityRequest): Single<Location> {
+    override fun getCitiesFromNetwork(cityRequestData: CityRequest): Single<Location> {
         return cityApiService.searchCity(
-            cityRequest.api,
-            cityRequest.query,
-            cityRequest.language,
-            cityRequest.details)
+            cityRequestData.api,
+            cityRequestData.query,
+            cityRequestData.language,
+            cityRequestData.details)
     }
 }
