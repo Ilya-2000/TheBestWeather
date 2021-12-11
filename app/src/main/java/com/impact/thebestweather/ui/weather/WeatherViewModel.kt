@@ -33,12 +33,10 @@ class WeatherViewModel @Inject constructor(
     application: Application) : AndroidViewModel(application) {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    private val application: Application? = getApplication()
 
     private val _weatherLiveData = MutableLiveData<Weather>()
     val weatherLiveData: LiveData<Weather>
         get() = _weatherLiveData
-
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
@@ -76,17 +74,13 @@ class WeatherViewModel @Inject constructor(
 
 
      fun getWeatherRequest(navController: NavController): WeatherRequestData? {
-        //var boolean: Boolean? = null
         val locationShared = getSelectedCityUseCase.execute()
-        //Log.d(TAG, "defaultCity: $boolean")
         if (locationShared?.key.isNullOrEmpty()) {
             navController.navigate(R.id.action_navigation_home_to_navigation_city)
         } else {
             _lastCityLiveData.value = locationShared?.name
             Log.d(TAG, "lastCityKey: ${locationShared?.key}")
             Log.d(TAG, "lastCityName: ${locationShared?.name}")
-            //val mValues = sharedPreferences.getString("metricValues", "")
-            //boolean = mValues.equals("metric")
             return locationShared?.let {
                 WeatherRequestData(
                     it.key,

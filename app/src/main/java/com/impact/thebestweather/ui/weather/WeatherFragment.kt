@@ -15,8 +15,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.impact.thebestweather.R
+import com.impact.thebestweather.adapter.CityListRvAdapter
 import com.impact.thebestweather.adapter.DailyRvAdapter
 import com.impact.thebestweather.adapter.HourlyRvAdapter
 import com.impact.thebestweather.databinding.WeatherFragmentBinding
@@ -31,17 +33,13 @@ import java.util.*
 class WeatherFragment : Fragment() {
 
     private val TAG = "WeatherFragment"
-    //private lateinit var weatherViewModel: WeatherViewModel
     private lateinit var navController: NavController
-
-    /*private val weatherViewModel: WeatherViewModel by viewModels {
-        BooksViewModel.BooksViewModelFactory(
-            ((requireActivity().application) as ).getBooksUseCase,
-            ((requireActivity().application) as CleanArchitectureBlueprintsApplication).getBookmarksUseCase,
-
-        )
-    }*/
     private val weatherViewModel : WeatherViewModel by viewModels()
+    private lateinit var hourlyRecyclerView: RecyclerView
+    private lateinit var dailyRecyclerView: RecyclerView
+
+    private lateinit var hourlyAdapter: HourlyRvAdapter
+    private lateinit var dailyAdapter: DailyRvAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,18 +54,17 @@ class WeatherFragment : Fragment() {
             savedInstanceState: Bundle?
     ): View? {
         navController = findNavController()
-        /*weatherViewModel =
-                ViewModelProvider(this).get(WeatherViewModel::class.java)*/
         weatherViewModel.getWeatherRequest(navController)?.let {
             weatherViewModel.getWeather(it)
         }
         val binding: WeatherFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_weather, container, false)
+        hourlyRecyclerView = binding.hourlyWeatherRv
+        dailyRecyclerView = binding.dailyWeatherRv
         weatherViewModel.lastCityLiveData.observe(viewLifecycleOwner, Observer {
             binding.cityWeatherText.text = it
         })
         binding.bgWeatherLayout.visibility = View.VISIBLE
-        binding.hourlyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-        binding.dailyWeatherRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
         weatherViewModel.loadingState.observe(viewLifecycleOwner, Observer { it ->
             when(it.status) {
                 LoadingState.Status.FAILED -> {
@@ -89,12 +86,6 @@ class WeatherFragment : Fragment() {
                 LoadingState.Status.SUCCESS -> {
                     binding.bgWeatherLayout.visibility = View.GONE
                     Toast.makeText(requireContext(), "Success", Toast.LENGTH_LONG).show()
-                    //val adapter = HourlyRvAdapter(weatherViewModel)
-                    //val dailyAdapter = DailyRvAdapter(weatherViewModel)
-                    //binding.hourlyWeatherRv.adapter = adapter
-                    //binding.dailyWeatherRv.adapter = dailyAdapter
-                    //adapter.notifyDataSetChanged()
-                    //dailyAdapter.notifyDataSetChanged()
                     Log.d(TAG, "it: $it")
                     Log.d(TAG, "weather: ${weatherViewModel.weatherLiveData.value}")
 
@@ -123,6 +114,14 @@ class WeatherFragment : Fragment() {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val mValues = sharedPreferences.getString("metricValues", "")
         return mValues.equals("metric")
+    }
+
+    fun setupHourlyRecyclerView() {
+        hourlyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+    }
+
+    fun setupDailyRecyclerView() {
+        dailyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
     }
 
 
