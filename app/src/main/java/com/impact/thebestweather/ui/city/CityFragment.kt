@@ -29,6 +29,7 @@ class CityFragment : Fragment(), CityListRvAdapter.OnItemClickListener {
     private val TAG = "CityFragment"
     private lateinit var navController: NavController
     private lateinit var recyclerView: RecyclerView
+    private lateinit var adapter: CityListRvAdapter
 
     private val cityViewModel: CityViewModel by viewModels()
 
@@ -61,12 +62,10 @@ class CityFragment : Fragment(), CityListRvAdapter.OnItemClickListener {
                     //binding.cityProgressBar.visibility = View.GONE
                     binding.messageCityText.visibility = View.GONE
                     Log.d(TAG, "Status: $it")
-                    cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
+                    cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {data ->
                         Log.d(TAG, "BRUH $it")
-                        val adapter = CityListRvAdapter(it, requireContext(), this)
-                        recyclerView.layoutManager = GridLayoutManager(context, 2)
-                        recyclerView.adapter = adapter
-                        adapter?.notifyDataSetChanged()
+                        adapter.addData(data)
+                        adapter.notifyDataSetChanged()
                     })
                 }
             }
@@ -79,12 +78,19 @@ class CityFragment : Fragment(), CityListRvAdapter.OnItemClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
 
     }
 
     override fun onItemClick(locationItem: LocationItem) {
         cityViewModel.setSelectedCity(locationItem)
         navController.navigate(R.id.action_navigation_city_to_navigation_home)
+    }
+
+    private fun setupRecyclerView() {
+        adapter = CityListRvAdapter(this)
+        recyclerView.layoutManager = GridLayoutManager(context, 2)
+        recyclerView.adapter = adapter
     }
 
 

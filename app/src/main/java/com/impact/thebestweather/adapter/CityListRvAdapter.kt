@@ -12,7 +12,9 @@ import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
 
 
-class CityListRvAdapter(private var cityList: Location, val context: Context, private val listener: OnItemClickListener): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
+class CityListRvAdapter(private val listener: OnItemClickListener): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
+    private val cityList = arrayListOf<LocationItem>()
+
     interface OnItemClickListener {
         fun onItemClick(locationItem: LocationItem)
     }
@@ -29,8 +31,6 @@ class CityListRvAdapter(private var cityList: Location, val context: Context, pr
         holder.bind(item)
         holder.itemView.setOnClickListener {
             listener.onItemClick(cityList[position])
-            //viewModel.setSelectedCity(position, navController)
-            //sharedPreferences
         }
     }
 
@@ -45,6 +45,13 @@ class CityListRvAdapter(private var cityList: Location, val context: Context, pr
             cityCardBinding.executePendingBindings()
         }
     }
+
+    fun addData(location: Location) {
+        cityList.clear()
+        cityList.addAll(location)
+    }
+
+
 
 
 }
