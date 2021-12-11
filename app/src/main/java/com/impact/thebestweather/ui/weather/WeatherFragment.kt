@@ -91,13 +91,13 @@ class WeatherFragment : Fragment() {
 
                     weatherViewModel.currentWeatherLiveData.observe(viewLifecycleOwner, Observer {
                         binding.currentWeatherDesc = weatherViewModel.currentWeatherLiveData.value?.get(0)?.WeatherText
-                        if (checkTypeValues()) {
-                            binding.currentWeatherTemp = weatherViewModel.currentWeatherLiveData
-                                .value?.get(0)?.Temperature?.Metric?.Value.toString()
-                        } else {
-                            binding.currentWeatherTemp = weatherViewModel.currentWeatherLiveData
-                                .value?.get(0)?.Temperature?.Imperial?.Value.toString()
-                        }
+                        binding.currentWeatherTemp = weatherViewModel.currentWeatherLiveData
+                            .value?.get(0)?.Temperature?.Metric?.Value.toString()
+
+                    })
+                    weatherViewModel.weatherLiveData.observe(viewLifecycleOwner, Observer { weather ->
+                        hourlyAdapter.addData(weather.hourlyData)
+                        dailyAdapter.addData(weather.dailyData.DailyForecasts)
                     })
 
                     val sdf = SimpleDateFormat("dd/M/yyyy")
@@ -110,18 +110,23 @@ class WeatherFragment : Fragment() {
         return binding.root
     }
 
-    private fun checkTypeValues(): Boolean {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val mValues = sharedPreferences.getString("metricValues", "")
-        return mValues.equals("metric")
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        setupDailyRecyclerView()
+        setupHourlyRecyclerView()
     }
 
-    fun setupHourlyRecyclerView() {
+
+    private fun setupHourlyRecyclerView() {
+        hourlyAdapter = HourlyRvAdapter()
         hourlyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        hourlyRecyclerView.adapter = hourlyAdapter
     }
 
-    fun setupDailyRecyclerView() {
+    private fun setupDailyRecyclerView() {
+        dailyAdapter = DailyRvAdapter()
         dailyRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+        dailyRecyclerView.adapter = dailyAdapter
     }
 
 

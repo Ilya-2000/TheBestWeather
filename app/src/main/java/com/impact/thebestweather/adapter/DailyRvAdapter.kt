@@ -13,8 +13,8 @@ import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.daily.DailyForecast
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
-class DailyRvAdapter(private var dailyDataList: DailyData): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
-
+class DailyRvAdapter(): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
+    private val dailyDataList = arrayListOf<DailyForecast>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: DailyItemBinding = DataBindingUtil
             .inflate(
@@ -24,18 +24,17 @@ class DailyRvAdapter(private var dailyDataList: DailyData): RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = dailyDataList.DailyForecasts[position]
+        val item = dailyDataList[position]
         holder.bind(item)
 
     }
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount() = dailyDataList.size
 
     inner class ViewHolder(var dailyItemBinding: DailyItemBinding): RecyclerView.ViewHolder(dailyItemBinding.root) {
         fun bind(item: DailyForecast) = with(dailyItemBinding) {
             val localDate = item.Date
             dailyItemBinding.date = cutDate(localDate)
-
             dailyItemBinding.dailyItem = item
             dailyItemBinding.executePendingBindings()
         }
@@ -43,6 +42,11 @@ class DailyRvAdapter(private var dailyDataList: DailyData): RecyclerView.Adapter
 
     private fun cutDate(localDate: String): String {
         return localDate.substring(0,10)
+    }
+
+    fun addData(data: List<DailyForecast>) {
+        dailyDataList.clear()
+        dailyDataList.addAll(data)
     }
 
 }

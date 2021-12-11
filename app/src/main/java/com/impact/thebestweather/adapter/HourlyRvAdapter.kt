@@ -12,8 +12,8 @@ import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.models.weather.hourly.HourlyDataItem
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
-class HourlyRvAdapter(private var hourlyWeatherList: HourlyData): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
-
+class HourlyRvAdapter(): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
+    private var hourlyWeatherList = arrayListOf<HourlyDataItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: HourlyWeatherItemBinding = DataBindingUtil
@@ -29,7 +29,7 @@ class HourlyRvAdapter(private var hourlyWeatherList: HourlyData): RecyclerView.A
             holder.bind(item)
     }
 
-    override fun getItemCount(): Int = 12
+    override fun getItemCount() = hourlyWeatherList.size
 
 
 
@@ -44,5 +44,10 @@ class HourlyRvAdapter(private var hourlyWeatherList: HourlyData): RecyclerView.A
     }
     private fun cutDate(localDate: String): String {
         return localDate.substring(11,16)
+    }
+
+    fun addData(data: HourlyData) {
+        hourlyWeatherList.clear()
+        hourlyWeatherList.addAll(data)
     }
 }
