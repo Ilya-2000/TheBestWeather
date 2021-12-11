@@ -12,8 +12,10 @@ import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
 
 
-class CityListRvAdapter(private var cityList: Location, val context: Context): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
-
+class CityListRvAdapter(private var cityList: Location, val context: Context, private val listener: OnItemClickListener): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
+    interface OnItemClickListener {
+        fun onItemClick(locationItem: LocationItem)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view : СityCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.favorite_city_card,
             parent,
@@ -26,6 +28,7 @@ class CityListRvAdapter(private var cityList: Location, val context: Context): R
         val item = cityList[position]
         holder.bind(item)
         holder.itemView.setOnClickListener {
+            listener.onItemClick(cityList[position])
             //viewModel.setSelectedCity(position, navController)
             //sharedPreferences
         }

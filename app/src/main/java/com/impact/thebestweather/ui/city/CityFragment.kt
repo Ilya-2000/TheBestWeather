@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.adapter.CityListRvAdapter
 import com.impact.thebestweather.databinding.CityFragmentBinding
+import com.impact.thebestweather.models.location.LocationItem
 import com.impact.thebestweather.utils.LoadingState
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -24,7 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 @AndroidEntryPoint
-class CityFragment : Fragment() {
+class CityFragment : Fragment(), CityListRvAdapter.OnItemClickListener {
     private val TAG = "CityFragment"
     private lateinit var navController: NavController
     private lateinit var recyclerView: RecyclerView
@@ -62,7 +63,7 @@ class CityFragment : Fragment() {
                     Log.d(TAG, "Status: $it")
                     cityViewModel.cityListLiveData.observe(viewLifecycleOwner, Observer {
                         Log.d(TAG, "BRUH $it")
-                        val adapter = CityListRvAdapter(it, requireContext())
+                        val adapter = CityListRvAdapter(it, requireContext(), this)
                         recyclerView.layoutManager = GridLayoutManager(context, 2)
                         recyclerView.adapter = adapter
                         adapter?.notifyDataSetChanged()
@@ -81,6 +82,10 @@ class CityFragment : Fragment() {
 
     }
 
+    override fun onItemClick(locationItem: LocationItem) {
+        cityViewModel.setSelectedCity(locationItem)
+        navController.navigate(R.id.action_navigation_city_to_navigation_home)
+    }
 
 
 }
