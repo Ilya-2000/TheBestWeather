@@ -98,6 +98,8 @@ class WeatherFragment : Fragment() {
                     weatherViewModel.weatherLiveData.observe(viewLifecycleOwner, Observer { weather ->
                         hourlyAdapter.addData(weather.hourlyData)
                         dailyAdapter.addData(weather.dailyData.DailyForecasts)
+                        hourlyAdapter.notifyDataSetChanged()
+                        dailyAdapter.notifyDataSetChanged()
                     })
 
                     val sdf = SimpleDateFormat("dd/M/yyyy")

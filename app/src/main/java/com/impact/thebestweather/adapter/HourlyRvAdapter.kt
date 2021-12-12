@@ -47,7 +47,7 @@ class HourlyRvAdapter(): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
     }
 
     fun addData(data: HourlyData) {
-        hourlyWeatherList.clear()
+        //hourlyWeatherList.clear()
         hourlyWeatherList.addAll(data)
     }
 }

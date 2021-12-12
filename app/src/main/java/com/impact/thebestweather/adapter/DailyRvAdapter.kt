@@ -33,6 +33,7 @@ class DailyRvAdapter(): RecyclerView.Adapter<DailyRvAdapter.ViewHolder>() {
 
     inner class ViewHolder(var dailyItemBinding: DailyItemBinding): RecyclerView.ViewHolder(dailyItemBinding.root) {
         fun bind(item: DailyForecast) = with(dailyItemBinding) {
+            Log.d("DailyRvAdapter", "ViewHolder: $item")
             val localDate = item.Date
             dailyItemBinding.date = cutDate(localDate)
             dailyItemBinding.dailyItem = item
