@@ -1,10 +1,8 @@
 package com.impact.thebestweather.utils
 
-import android.util.Log
 import android.widget.SearchView
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
-import java.util.concurrent.TimeUnit
 
 class RxSearchView {
     private val TAG = "RxSearchView"

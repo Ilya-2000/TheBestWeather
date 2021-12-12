@@ -7,31 +7,36 @@ import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.impact.thebestweather.R
-import com.impact.thebestweather.data.weather.remote.WeatherSource
+import com.impact.thebestweather.models.weather.Weather
+import com.impact.thebestweather.weather.WeatherRemoteSourceImpl
 import com.impact.thebestweather.models.weather.WeatherRequestData
 import com.impact.thebestweather.models.weather.current.CurrentWeather
 import com.impact.thebestweather.models.weather.daily.DailyData
 import com.impact.thebestweather.models.weather.hourly.HourlyData
+import com.impact.thebestweather.usecases.GetSelectedCityUseCase
+import com.impact.thebestweather.usecases.GetWeatherUseCase
 import com.impact.thebestweather.utils.Constant
 import com.impact.thebestweather.utils.LoadingState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class WeatherViewModel(application: Application) : AndroidViewModel(application) {
+@HiltViewModel
+class WeatherViewModel @Inject constructor(
+    private val getWeatherUseCase: GetWeatherUseCase,
+    private val getSelectedCityUseCase: GetSelectedCityUseCase,
+    application: Application) : AndroidViewModel(application) {
     private val TAG = "WeatherViewModel"
     private val compositeDisposable = CompositeDisposable()
-    lateinit var weatherSource: WeatherSource
-    private val application: Application? = getApplication()
 
-    private val _dailyWeatherLiveData = MutableLiveData<DailyData>()
-    val dailyWeatherLiveData: LiveData<DailyData>
-        get() = _dailyWeatherLiveData
-    private val _hourlyWeatherLiveData = MutableLiveData<HourlyData>()
-    val hourlyWeatherLiveData: LiveData<HourlyData>
-        get() = _hourlyWeatherLiveData
+    private val _weatherLiveData = MutableLiveData<Weather>()
+    val weatherLiveData: LiveData<Weather>
+        get() = _weatherLiveData
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState>
         get() = _loadingState
@@ -45,20 +50,19 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
     fun getWeather(weatherRequestData: WeatherRequestData) {
         try {
-            weatherSource = WeatherSource()
+
             _loadingState.value = LoadingState.LOADING
-            compositeDisposable.add(weatherSource.getWeather(weatherRequestData)
+            compositeDisposable.add(getWeatherUseCase.execute(weatherRequestData)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ weather ->
-                        _hourlyWeatherLiveData.postValue(weather.hourlyData)
-                        _dailyWeatherLiveData.postValue(weather.dailyData)
+                        _weatherLiveData.postValue(weather)
                         _currentWeatherLiveData.postValue(weather.currentWeather)
-                        Log.d(TAG, "getWeather:success/ ${weather.dailyData}")
-                        Log.d(TAG, "getWeather:current/ ${weather.currentWeather}")
+                        Log.d(TAG, "GetWeatherUseCase:success/ ${weather.dailyData}")
+                        Log.d(TAG, "GetWeatherUseCase:current/ ${weather.currentWeather}")
                         _loadingState.value = LoadingState.LOADED
                     }, { e ->
-                        Log.d(TAG, "getWeather:e/ ${e.message}")
+                        Log.d(TAG, "GetWeatherUseCase:e/ ${e.message}")
                         _loadingState.value = LoadingState.error(e.message)
                     })
             )
@@ -70,27 +74,22 @@ class WeatherViewModel(application: Application) : AndroidViewModel(application)
 
 
      fun getWeatherRequest(navController: NavController): WeatherRequestData? {
-        var boolean: Boolean? = null
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(application)
-        val shp = application?.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
-        val lastCityKey = shp?.getString("lastCityKey", "")
-        val lastCityName = shp?.getString("lastCityName", "")
-        Log.d(TAG, "defaultCity: $boolean")
-        if (lastCityKey.isNullOrEmpty()) {
+        val locationShared = getSelectedCityUseCase.execute()
+        if (locationShared?.key.isNullOrEmpty()) {
             navController.navigate(R.id.action_navigation_home_to_navigation_city)
         } else {
-            _lastCityLiveData.value = lastCityName.toString()
-            Log.d(TAG, "lastCityKey: $lastCityKey")
-            Log.d(TAG, "lastCityName: $lastCityName")
-            val mValues = sharedPreferences.getString("metricValues", "")
-            boolean = mValues.equals("metric")
-            return WeatherRequestData(
-                lastCityKey,
-                Constant.API_KEY,
-                "en",
-                "false",
-                boolean.toString()
-            )
+            _lastCityLiveData.value = locationShared?.name
+            Log.d(TAG, "lastCityKey: ${locationShared?.key}")
+            Log.d(TAG, "lastCityName: ${locationShared?.name}")
+            return locationShared?.let {
+                WeatherRequestData(
+                    it.key,
+                    Constant.API_KEY,
+                    "en",
+                    "false",
+                    "metric"
+                )
+            }
         }
         return null
     }

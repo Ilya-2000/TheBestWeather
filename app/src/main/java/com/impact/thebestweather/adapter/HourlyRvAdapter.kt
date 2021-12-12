@@ -7,12 +7,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.HourlyWeatherItemBinding
+import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.weather.hourly.HourlyData
 import com.impact.thebestweather.models.weather.hourly.HourlyDataItem
 import com.impact.thebestweather.ui.weather.WeatherViewModel
 
-class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
-
+class HourlyRvAdapter(): RecyclerView.Adapter<HourlyRvAdapter.ViewHolder>() {
+    private var hourlyWeatherList = arrayListOf<HourlyDataItem>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: HourlyWeatherItemBinding = DataBindingUtil
@@ -24,13 +25,11 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = viewModel.hourlyWeatherLiveData.value?.get(position)
-        if (item != null) {
+        val item = hourlyWeatherList[position]
             holder.bind(item)
-        }
     }
 
-    override fun getItemCount(): Int = 12
+    override fun getItemCount() = hourlyWeatherList.size
 
 
 
@@ -45,5 +44,10 @@ class HourlyRvAdapter(private var viewModel: WeatherViewModel): RecyclerView.Ada
     }
     private fun cutDate(localDate: String): String {
         return localDate.substring(11,16)
+    }
+
+    fun addData(data: HourlyData) {
+        //hourlyWeatherList.clear()
+        hourlyWeatherList.addAll(data)
     }
 }

@@ -1,7 +1,6 @@
 package com.impact.thebestweather.adapter
 
 import android.content.Context
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -9,12 +8,16 @@ import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.impact.thebestweather.R
 import com.impact.thebestweather.databinding.СityCardBinding
+import com.impact.thebestweather.models.location.Location
 import com.impact.thebestweather.models.location.LocationItem
-import com.impact.thebestweather.ui.city.CityViewModel
-import java.util.zip.Inflater
 
-class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavController, val context: Context): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
 
+class CityListRvAdapter(private val listener: OnItemClickListener): RecyclerView.Adapter<CityListRvAdapter.ViewHolder>() {
+    private val cityList = arrayListOf<LocationItem>()
+
+    interface OnItemClickListener {
+        fun onItemClick(locationItem: LocationItem)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view : СityCardBinding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.favorite_city_card,
             parent,
@@ -24,26 +27,15 @@ class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavCont
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = viewModel.cityListLiveData.value?.get(position)
-        if (item != null) {
-            holder.bind(item)
-        }
+        val item = cityList[position]
+        holder.bind(item)
         holder.itemView.setOnClickListener {
-            viewModel.setSelectedCity(position, navController)
-            val shp = context.getSharedPreferences("lastRequestShP", Context.MODE_PRIVATE)
-            val edit = shp.edit()
-            edit.putString("lastCityKey", item?.Key)
-            edit.putString("lastCityName", item?.EnglishName)
-            edit.apply()
+            listener.onItemClick(cityList[position])
         }
     }
 
     override fun getItemCount(): Int {
-        if (viewModel.cityListLiveData.value?.size != null) {
-            return viewModel.cityListLiveData.value!!.size
-        } else {
-            return 0
-        }
+        return cityList.size
     }
 
 
@@ -53,6 +45,13 @@ class CityListRvAdapter(val viewModel: CityViewModel, val navController: NavCont
             cityCardBinding.executePendingBindings()
         }
     }
+
+    fun addData(location: Location) {
+        cityList.clear()
+        cityList.addAll(location)
+    }
+
+
 
 
 }
