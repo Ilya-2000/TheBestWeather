@@ -1,12 +1,12 @@
 package com.impact.thebestweather.models
 
-sealed class Resource<T>(
+sealed class Result<T>(
         val data: T? = null,
         val errorCode: Int? = null
 ) {
-    class Success<T>(data: T) : Resource<T>(data)
-    class Loading<T>(data: T? = null) : Resource<T>(data)
-    class DataError<T>(errorCode: Int) : Resource<T>(null, errorCode)
+    class Success<T>(data: T) : Result<T>(data)
+    class Loading<T>(data: T? = null) : Result<T>(data)
+    class DataError<T>(errorCode: Int) : Result<T>(null, errorCode)
 
     override fun toString(): String {
         return when (this) {
